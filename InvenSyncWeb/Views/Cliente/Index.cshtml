@@ -1,0 +1,290 @@
+﻿@model List<CapaDatosWeb.Modelado.Cliente>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string descripcion = "Lista de Clientes";
+}
+
+<hr />
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card shadow mb-5">
+            <div class="card-header bg-body-secondary text-dark" style="font-weight:700">
+                <i class="fa fa-users"></i>
+                @descripcion
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <button type="button" id="btnNuevoCliente" class="btn btn-sm btn-success" data-bs-toggle="modal" style="font-weight:700" onclick="AbrirModal(null)"><i class="fas fa-plus-circle me-2"></i>Agregar Nuevo Cliente</button>
+                    </div>
+                </div>
+                <hr />
+                <div class="row table-responsive mt-3">
+                    <div class="col-sm-12">
+                        <table id="tbdata" class="table table-striped table-bordered nowrap compact" cellspacing="0" style="width: 100%">
+                            <thead>
+                                <tr class="text-success-emphasis">
+                                    <th class="text-center">Id</th>
+                                    <th class="text-center">Código</th>
+                                    <th class="text-center">Nombre</th>
+                                    <th class="text-center">1er. Apellido</th>
+                                    <th class="text-center">2do. Apellido</th>
+                                    <th class="text-center">Correo</th>
+                                    <th class="text-center">Telefono</th>
+                                    <th class="text-center">Estado</th>
+                                    <th class="text-center">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade modal-lg" id="mdlClienteAdd" tabindex="-1" aria-labelledby="mdlLabelClienteAdd" data-bs-backdrop="static" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-body-secondary font-weight-bold text-black">
+                <h4 class="modal-title">Información del cliente</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row g-3">
+                        <input id="clienteId" type="hidden" value="0" />
+
+                        <div class="col-md-4">
+                            <label for="codigo" class="form-label" style="font-weight:bold">Código</label>
+                            <input type="text" class="form-control form-control-sm" id="codigo" name="codigo" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="nombrecliente" class="form-label" style="font-weight:bold">Nombre Completo</label>
+                            <input type="text" class="form-control form-control-sm" id="nombrecliente" name="nombrecliente" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="apellidoUnoCliente" class="form-label" style="font-weight:bold">Primer Apellido</label>
+                            <input type="text" class="form-control form-control-sm" id="apellidoUnoCliente" name="apellidoUnoCliente" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="apellidoDosCliente" class="form-label" style="font-weight:bold">Segundo Apellido</label>
+                            <input type="text" class="form-control form-control-sm" id="apellidoDosCliente" name="apellidoDosCliente">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="correoCliente" class="form-label" style="font-weight:bold">Correo</label>
+                            <input type="text" class="form-control form-control-sm" id="correoCliente" name="correoCliente">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="telefonoCliente" class="form-label" style="font-weight:bold">Telefono</label>
+                            <input type="text" class="form-control form-control-sm" id="telefonoCliente" name="telefonoCliente">
+                        </div>
+
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="cboEstado" class="form-label" style="font-weight:bold">Estado</label>
+                                <select id="cboEstado" class="form-select">
+                                    <option value="1">Activo</option>
+                                    <option value="0">No Activo</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-success" onclick=" GuardarCliente()">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="mdlEliminarCliente" tabindex="-1" aria-labelledby="mdlLabelEliminarCliente" data-bs-backdrop="static" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-body-secondar text-dark">
+                <h4 class="modal-title" id="mdlLabelEliminarCliente">Confirmación de Eliminación</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>¿Está seguro de que desea eliminar el cliente <strong id="clienteNombre"></strong>?</p>
+                <input type="hidden" id="clienteIdEliminar" value="0" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" onclick="EliminarCliente()">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts {
+    <script>
+        var dataTable;
+        var selectRow;
+
+        $(document).ready(function () {
+            // Configuración de DataTable
+            dataTable = $("#tbdata").DataTable({
+                responsive: true,
+                ordering: false,
+                "ajax": {
+                    url: '@Url.Action("ListarCliente", "Cliente")',
+                    type: "GET",
+                    dataType: "json"
+                },
+                "columns": [
+                    { "data": "Id" },
+                    { "data": "Codigo" },
+                    { "data": "Nombres" },
+                    { "data": "Apellido1" },
+                    { "data": "Apellido2" },
+                    { "data": "Correo"},
+                    { "data": "Telefono" },
+                    {
+                        "data": "Estado",
+                        "render": function (valor) {
+                            return valor ? '<span class="badge bg-info">Activo</span>' : '<span class="badge bg-danger">No Activo</span>';
+                        }
+                    },
+                    {
+                        "data": null,
+                        "render": function (data, type, row) {
+                            return `<button type="button" class="btn btn-primary btn-sm edit-btn"><i class="fas fa-pen"></i></button>` +
+                                `<button type="button" class="btn btn-danger btn-sm ms-2"><i class="fas fa-trash"></i></button>`;
+                        },
+                        "orderable": false,
+                        "searchable": false,
+                        "width": "80px"
+                    }
+                ],
+                "language": {
+                    "url": "https://cdn.datatables.net/plug-ins/1.11.3/i18n/es_es.json"
+                }
+            });
+        });
+
+        function AbrirModal(data) {
+
+            // Limpia los campos del modal
+            $("#clienteId").val(0);
+            $('#codigo').val("");
+            $('#nombrecliente').val("");
+            $('#apellidoUnoCliente').val("");
+            $('#apellidoDosCliente').val("");
+            $('#correoCliente').val("");
+            $('#telefonoCliente').val("");
+            $('#cboEstado').val("1");
+
+            if (data != null) {
+                $("#clienteId").val(data.Id);
+                $('#codigo').val(data.Codigo);
+                $('#nombrecliente').val(data.Nombres);
+                $('#apellidoUnoCliente').val(data.Apellido1);
+                $('#apellidoDosCliente').val(data.Apellido2);
+                $('#correoCliente').val(data.Correo);
+                $('#telefonoCliente').val(data.Telefono);
+                $('#cboEstado').val(data.Estado == true ? 1 : 0);
+            }
+
+            $("#mdlClienteAdd").modal("show");
+        }
+
+        // Evento para abrir el modal de edición con datos del cliente seleccionado
+        $('#tbdata tbody').on('click', '.edit-btn', function () {
+
+            selectRow = $(this).closest('tr');
+            var data = dataTable.row(selectRow).data();
+            AbrirModal(data);
+        });
+
+        function GuardarCliente() {
+            var cliente = {
+                Id: $("#clienteId").val(),
+                Codigo: $("#codigo").val(),
+                Nombres: $("#nombrecliente").val(),
+                Apellido1: $("#apellidoUnoCliente").val(),
+                Apellido2: $("#apellidoDosCliente").val(),
+                Correo: $("#correoCliente").val(),
+                Telefono: $("#telefonoCliente").val(),
+                Estado: $("#cboEstado").val() == "1"
+            };
+
+            $.ajax({
+                url: '@Url.Action("GuardarCliente", "Cliente")', // URL del controlador para guardar cliente
+                type: "POST",
+                data: JSON.stringify(cliente),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    if (response.success) {
+                        // Si es un nuevo proveedor, lo agregamos a la tabla
+                        if (clienter.Id == 0) {
+                            dataTable.row.add(response.data).draw(false);
+                        } else {
+                            // Si es una actualización, actualizamos la fila seleccionada
+                            dataTable.row(selectRow).data(response.data).draw(false);
+                        }
+
+                        // Mostrar mensaje de éxito
+                        alert(response.message);
+                    } else {
+                        // Mostrar mensaje de error
+                        alert(response.message);
+                    }
+                },
+                error: function () {
+                    alert("Ocurrió un error al guardar al cliente.");
+                }
+            });
+
+            // Cierra el modal
+            $("#mdlClienteAdd").modal("hide");
+        }
+
+        // Evento para abrir el modal de confirmación de eliminación
+        $('#tbdata tbody').on('click', '.btn-danger', function () {
+            selectRow = $(this).closest('tr');
+            var data = dataTable.row(selectRow).data();
+
+            // Configura los datos en el modal
+            $("#clienteNombre").text(data.Nombres + " " + data.Apellido1);
+            $("#clienteIdEliminar").val(data.Id);
+
+            // Muestra el modal
+            $("#mdlEliminarCliente").modal("show");
+        });
+
+        // Función para eliminar un cliente
+        function EliminarCliente() {
+            var clienteId = $("#clienteIdEliminar").val();
+
+            $.ajax({
+                url: '@Url.Action("EliminarCliente", "Cliente")',
+                type: 'POST',
+                data: JSON.stringify({ id: clienteId }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    if (response.success) {
+                        dataTable.row(selectRow).remove().draw(false);
+                        alert(response.message);
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function () {
+                    alert("Ocurrió un error al eliminar al cliente");
+                }
+            });
+
+            $("#mdlEliminarCliente").modal("hide");
+        }
+    </script>
+}

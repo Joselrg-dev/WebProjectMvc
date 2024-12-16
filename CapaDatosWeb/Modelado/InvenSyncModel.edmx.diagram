@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="821f9ed9a8f64ee8add38191c0109c1b" Name="Diagram1" ZoomLevel="64">
+        <EntityTypeShape EntityType="InvenSyncModel.Categoria" Width="1.5" PointX="5.25" PointY="10" IsExpanded="true" />
+        <EntityTypeShape EntityType="InvenSyncModel.Cliente" Width="1.5" PointX="8.25" PointY="14.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="InvenSyncModel.DetalleCompra" Width="1.5" PointX="9.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="InvenSyncModel.FacturaCompra" Width="1.5" PointX="7.5" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="InvenSyncModel.FacturaVenta" Width="1.5" PointX="10.5" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="InvenSyncModel.MovimientoInventario" Width="1.5" PointX="9.75" PointY="10" IsExpanded="true" />
+        <EntityTypeShape EntityType="InvenSyncModel.Pago" Width="1.5" PointX="12.75" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="InvenSyncModel.Permiso" Width="1.5" PointX="0.75" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="InvenSyncModel.Producto" Width="1.5" PointX="7.5" PointY="9.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="InvenSyncModel.Proveedor" Width="1.5" PointX="5.25" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="InvenSyncModel.Rol" Width="1.5" PointX="3" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="InvenSyncModel.Usuario" Width="1.5" PointX="5.25" PointY="4.375" IsExpanded="true" />
+        <AssociationConnector Association="InvenSyncModel.FK__Producto__Catego__5EBF139D" ManuallyRouted="false" />
+        <AssociationConnector Association="InvenSyncModel.FK__FacturaVe__Clien__6D0D32F4" ManuallyRouted="false" />
+        <AssociationConnector Association="InvenSyncModel.FK__DetalleCo__Factu__70DDC3D8" ManuallyRouted="false" />
+        <AssociationConnector Association="InvenSyncModel.FK__DetalleCo__Produ__71D1E811" ManuallyRouted="false" />
+        <AssociationConnector Association="InvenSyncModel.FK__FacturaCo__Prove__693CA210" ManuallyRouted="false" />
+        <AssociationConnector Association="InvenSyncModel.FK__FacturaCo__Usuar__6A30C649" ManuallyRouted="false" />
+        <AssociationConnector Association="InvenSyncModel.FK__FacturaVe__Usuar__6E01572D" ManuallyRouted="false" />
+        <AssociationConnector Association="InvenSyncModel.FK__Pago__FacturaVen__797309D9" ManuallyRouted="false" />
+        <AssociationConnector Association="InvenSyncModel.FK__Movimient__Produ__75A278F5" ManuallyRouted="false" />
+        <AssociationConnector Association="InvenSyncModel.FK__Usuario__RolId__5535A963" ManuallyRouted="false" />
+        <AssociationConnector Association="InvenSyncModel.RolPermiso" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
