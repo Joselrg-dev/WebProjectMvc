@@ -1,0 +1,237 @@
+﻿@model List<CapaDatosWeb.Modelado.Proveedor>
+
+@{ 
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string descripcion = "Lista de Proveedores"; 
+}
+
+<hr />
+<div class="card shadow mb-3">
+    <div class="card-header py-3 bg-body-secondary">
+        <h5 class="m-0 font-weight-bold text-black"><i class="fas fa-users me-2"></i><strong>@descripcion</strong></h5>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm-4">
+                <!-- Botón para abrir el modal de agregar producto -->
+                <button type="button" id="nuevoProveedorBtn" class="btn btn-sm btn-success" data-bs-toggle="modal" onclick="ModalShow(null)"><i class="fas fa-plus-circle me-2"></i>Nuevo Proveedor</button>
+            </div>
+        </div>
+        <hr />
+        <div class="row table-responsive">
+            <div class="col-sm-12">
+                <table class="table table-hover table-bordered border-g mt-1" id="tbdata" cellspacing="0" style="width:100%">
+                    <thead>
+                        <tr class="success">
+                            <th class="text-center">Id</th>
+                            <th class="text-center">Código</th>
+                            <th class="text-center">Razón Social</th>
+                            <th class="text-center">Correo</th>
+                            <th class="text-center">Telefono</th>
+                            <th class="text-center">Estado</th>
+                            <th class="text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addProveedorModal" tabindex="-1" aria-labelledby="addProveedorModalLabel" data-bs-backdrop="static" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-body-secondary font-weight-bold text-black">
+                <h5 class="modal-title" id="exampleModalLabel">Información del Proveedor</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row g-2">
+                        <input id="proveedorId" type="hidden" value="0" />
+
+                        <div class="col-md-6">
+                            <label for="codigo" class="form-label" style="font-weight:bold">Código</label>
+                            <input type="text" class="form-control form-control-sm" id="codigo" name="codigo" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="razonsocial" class="form-label" style="font-weight:bold">Razón Social</label>
+                            <input type="text" class="form-control form-control-sm" id="razonsocial" name="razonsocial" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="email" class="form-label" style="font-weight:bold">E-mail</label>
+                            <input type="text" class="form-control form-control-sm" id="email" name="email">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="Telefono" class="form-label" style="font-weight:bold">Telefono</label>
+                            <input type="text" class="form-control form-control-sm" id="Telefono" name="Telefono">
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="cboEstado" class="form-label" style="font-weight:bold">Estado</label>
+                                <select id="cboEstado" class="form-select">
+                                    <option value="1">Activo</option>
+                                    <option value="0">No Activo</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-success" onclick=" GuardarProveedor()">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        var dataTable;
+        var selectRow;
+
+        $(document).ready(function () {
+            // Configuración de DataTable
+            dataTable = $("#tbdata").DataTable({
+                responsive: true,
+                ordering: false,
+                "ajax": {
+                    url: '@Url.Action("ListarProveedor", "Proveedor")',
+                    type: "GET",
+                    dataType: "json"
+                },
+                "columns": [
+                    { "data": "Id" },
+                    { "data": "Codigo" },
+                    { "data": "RazonSocial" },
+                    { "data": "Correo" },
+                    { "data": "Telefono" },
+                    {
+                        "data": "Estado",
+                        "render": function (valor) {
+                            return valor ? '<span class="badge bg-info">Activo</span>' : '<span class="badge bg-danger">No Activo</span>';
+                        }
+                    },
+                    {
+                        "data": null,
+                        "render": function (data, type, row) {
+                            return `<button type="button" class="btn btn-primary btn-sm edit-btn"><i class="fas fa-pen"></i></button>` +
+                                `<button type="button" class="btn btn-danger btn-sm ms-2"><i class="fas fa-trash"></i></button>`;
+                        },
+                        "orderable": false,
+                        "searchable": false,
+                        "width": "80px"
+                    }
+                ],
+                "language": {
+                    "url": "https://cdn.datatables.net/plug-ins/1.11.3/i18n/es_es.json"
+                }
+            });
+        });
+
+        function ModalShow(data) {
+
+            // Limpia los campos del modal
+            $("#proveedorId").val(0);
+            $('#codigo').val("");
+            $('#razonsocial').val("");
+            $('#email').val("");
+            $('#Telefono').val("");
+            $('#cboEstado').val("1");
+
+            if (data != null) {
+                $("#proveedorId").val(data.Id);
+                $('#codigo').val(data.Codigo);
+                $('#razonsocial').val(data.RazonSocial);
+                $('#email').val(data.Correo);
+                $('#Telefono').val(data.Telefono);
+                $('#cboEstado').val(data.Estado == true ? 1 : 0);
+            }
+
+            $("#addProveedorModal").modal("show");
+        }
+
+        // Evento para abrir el modal de edición con datos del proveedor seleccionado
+        $('#tbdata tbody').on('click', '.edit-btn', function () {
+
+            selectRow = $(this).closest('tr');
+            var data = dataTable.row(selectRow).data();
+            ModalShow(data);
+        });
+
+        function GuardarProveedor() {
+            var objSupplier = {
+                Id: $("#proveedorId").val(),
+                Codigo: $("#codigo").val(),
+                RazonSocial: $("#razonsocial").val(),
+                Correo: $("#email").val(),
+                Telefono: $("#Telefono").val(),
+                Estado: $("#cboEstado").val() == 1 ? true : false
+            };
+
+           $.ajax({
+                url: '@Url.Action("RegistrarProveedor", "Proveedor")', // URL del controlador para guardar proveedor
+                type: "POST",
+                data: JSON.stringify(objSupplier),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    if (response.success) {
+                        // Si es un nuevo proveedor, lo agregamos a la tabla
+                        if (objSupplier.Id == 0) {
+                            dataTable.row.add(response.data).draw(false);
+                        } else {
+                            // Si es una actualización, actualizamos la fila seleccionada
+                            dataTable.row(selectRow).data(response.data).draw(false);
+                        }
+
+                        // Mostrar mensaje de éxito
+                        alert(response.message);
+                    } else {
+                        // Mostrar mensaje de error
+                        alert(response.message);
+                    }
+                    // Cierra el modal
+                    $("#addProveedorModal").modal("hide");
+                },
+                error: function () {
+                    alert("Ocurrió un error al guardar el proveedor.");
+                }
+           });
+        }
+
+        // Evento para eliminar un proveedor
+        $('#tbdata tbody').on('click', '.btn-danger', function ( ) {
+            selectRow = $(this).closest('tr');
+            var data = dataTable.row(selectRow).data();
+
+            // Confirmar la eliminación
+            if (confirm("¿Estás seguro de que deseas eliminar este proveedor?")) {
+                $.ajax({
+                    url: '@Url.Action("EliminarProveedor", "Proveedor")', // URL del controlador para eliminar proveedor
+                    type: "POST",
+                    data: JSON.stringify({ id: data.Id }), // Enviar el ID del proveedor
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        if (response.success) {
+                            // Eliminar la fila de la tabla
+                            dataTable.row(selectRow).remove().draw(false);
+                            alert(response.message);
+                        } else {
+                            alert(response.message);
+                        }
+                    },
+                    error: function () {
+                        alert("Ocurrió un error al eliminar el proveedor.");
+                    }
+                });
+            }
+        });
+
+    </script>
+}
