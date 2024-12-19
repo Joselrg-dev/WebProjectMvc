@@ -10,7 +10,11 @@ namespace CapaNegocioWeb
 {
     public class ClienteServices : CrudServices<Cliente>
     {
+<<<<<<< HEAD
         private readonly InvenSyncEntity _db;
+=======
+        private InvenSyncEntity _db;
+>>>>>>> 74359c0d6097fad34d5222f0190d3674af346238
 
         public ClienteServices(InvenSyncEntity entity) : base(entity)
         {
@@ -59,6 +63,7 @@ namespace CapaNegocioWeb
 
             return string.Empty;
         }
+<<<<<<< HEAD
 
         public string GenerarCodigoCliente()
         {
@@ -83,5 +88,7 @@ namespace CapaNegocioWeb
 
             return nuevoCodigo;
         }
+=======
+>>>>>>> 74359c0d6097fad34d5222f0190d3674af346238
     }
 }

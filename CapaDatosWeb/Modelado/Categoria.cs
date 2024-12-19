@@ -29,7 +29,7 @@ namespace CapaDatosWeb.Modelado
         public string Codigo { get; set; }
 
         [Required(ErrorMessage = "La descripción es obligatoria")]
-        [StringLength(50, ErrorMessage = "La descripción no puede tener más de 50 caracteres.")]
+        [StringLength(50, ErrorMessage = "El código no puede tener más de 50 caracteres.")]
         public string Descripcion { get; set; }
         public Nullable<bool> Estado { get; set; }
         public Nullable<System.DateTime> FechaCreacion { get; set; } = DateTime.Now;

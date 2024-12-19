@@ -53,7 +53,11 @@
                     <div class="row g-2">
                         <input id="proveedorId" type="hidden" value="0" />
 
+<<<<<<< HEAD
                         <div class="col-md-6"> 
+=======
+                        <div class="col-md-6">
+>>>>>>> 74359c0d6097fad34d5222f0190d3674af346238
                             <label for="codigo" class="form-label" style="font-weight:bold">Código</label>
                             <input type="text" class="form-control form-control-sm" id="codigo" name="codigo" required>
                         </div>
@@ -90,6 +94,7 @@
 </div>
 
 @section scripts {
+<<<<<<< HEAD
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
@@ -138,6 +143,60 @@
 
         function ModalShow(data) {
             LimpiarCampos();
+=======
+    <script>
+        var dataTable;
+        var selectRow;
+
+        $(document).ready(function () {
+            // Configuración de DataTable
+            dataTable = $("#tbdata").DataTable({
+                responsive: true,
+                ordering: false,
+                "ajax": {
+                    url: '@Url.Action("ListarProveedor", "Proveedor")',
+                    type: "GET",
+                    dataType: "json"
+                },
+                "columns": [
+                    { "data": "Id" },
+                    { "data": "Codigo" },
+                    { "data": "RazonSocial" },
+                    { "data": "Correo" },
+                    { "data": "Telefono" },
+                    {
+                        "data": "Estado",
+                        "render": function (valor) {
+                            return valor ? '<span class="badge bg-info">Activo</span>' : '<span class="badge bg-danger">No Activo</span>';
+                        }
+                    },
+                    {
+                        "data": null,
+                        "render": function (data, type, row) {
+                            return `<button type="button" class="btn btn-primary btn-sm edit-btn"><i class="fas fa-pen"></i></button>` +
+                                `<button type="button" class="btn btn-danger btn-sm ms-2"><i class="fas fa-trash"></i></button>`;
+                        },
+                        "orderable": false,
+                        "searchable": false,
+                        "width": "80px"
+                    }
+                ],
+                "language": {
+                    "url": "https://cdn.datatables.net/plug-ins/1.11.3/i18n/es_es.json"
+                }
+            });
+        });
+
+        function ModalShow(data) {
+
+            // Limpia los campos del modal
+            $("#proveedorId").val(0);
+            $('#codigo').val("");
+            $('#razonsocial').val("");
+            $('#email').val("");
+            $('#Telefono').val("");
+            $('#cboEstado').val("1");
+>>>>>>> 74359c0d6097fad34d5222f0190d3674af346238
 
             if (data != null) {
                 $("#proveedorId").val(data.Id);
@@ -151,6 +210,7 @@
             $("#addProveedorModal").modal("show");
         }
 
+<<<<<<< HEAD
         function LimpiarCampos() {
             $("#proveedorId").val(0);
             $('#codigo').val("");
@@ -162,6 +222,11 @@
 
         // Evento para abrir el modal de edición con datos del proveedor seleccionado
         $('#tbdata tbody').on('click', '.edit-btn', function () {
+=======
+        // Evento para abrir el modal de edición con datos del proveedor seleccionado
+        $('#tbdata tbody').on('click', '.edit-btn', function () {
+
+>>>>>>> 74359c0d6097fad34d5222f0190d3674af346238
             selectRow = $(this).closest('tr');
             var data = dataTable.row(selectRow).data();
             ModalShow(data);
@@ -177,6 +242,7 @@
                 Estado: $("#cboEstado").val() == 1 ? true : false
             };
 
+<<<<<<< HEAD
             Swal.fire({
                 title: "¿Está seguro?",
                 text: "¿Desea guardar este proveedor?",
@@ -207,6 +273,37 @@
                     });
                 }
             });
+=======
+           $.ajax({
+                url: '@Url.Action("RegistrarProveedor", "Proveedor")', // URL del controlador para guardar proveedor
+                type: "POST",
+                data: JSON.stringify(objSupplier),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    if (response.success) {
+                        // Si es un nuevo proveedor, lo agregamos a la tabla
+                        if (objSupplier.Id == 0) {
+                            dataTable.row.add(response.data).draw(false);
+                        } else {
+                            // Si es una actualización, actualizamos la fila seleccionada
+                            dataTable.row(selectRow).data(response.data).draw(false);
+                        }
+
+                        // Mostrar mensaje de éxito
+                        alert(response.message);
+                    } else {
+                        // Mostrar mensaje de error
+                        alert(response.message);
+                    }
+                    // Cierra el modal
+                    $("#addProveedorModal").modal("hide");
+                },
+                error: function () {
+                    alert("Ocurrió un error al guardar el proveedor.");
+                }
+           });
+>>>>>>> 74359c0d6097fad34d5222f0190d3674af346238
         }
 
         // Evento para eliminar un proveedor
@@ -214,6 +311,7 @@
             selectRow = $(this).closest('tr');
             var data = dataTable.row(selectRow).data();
 
+<<<<<<< HEAD
             Swal.fire({
                 title: "¿Está seguro?",
                 text: `¿Desea eliminar el proveedor ${data.Codigo} ${data.RazonSocial}?`,
@@ -244,5 +342,31 @@
                 }
             });
         });
+=======
+            // Confirmar la eliminación
+            if (confirm("¿Estás seguro de que deseas eliminar este proveedor?")) {
+                $.ajax({
+                    url: '@Url.Action("EliminarProveedor", "Proveedor")', // URL del controlador para eliminar proveedor
+                    type: "POST",
+                    data: JSON.stringify({ id: data.Id }), // Enviar el ID del proveedor
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        if (response.success) {
+                            // Eliminar la fila de la tabla
+                            dataTable.row(selectRow).remove().draw(false);
+                            alert(response.message);
+                        } else {
+                            alert(response.message);
+                        }
+                    },
+                    error: function () {
+                        alert("Ocurrió un error al eliminar el proveedor.");
+                    }
+                });
+            }
+        });
+
+>>>>>>> 74359c0d6097fad34d5222f0190d3674af346238
     </script>
 }

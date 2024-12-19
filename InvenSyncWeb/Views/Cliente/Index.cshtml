@@ -50,7 +50,11 @@
 <div class="modal fade modal-lg" id="mdlClienteAdd" tabindex="-1" aria-labelledby="mdlLabelClienteAdd" data-bs-backdrop="static" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
+<<<<<<< HEAD
             <div class="modal-header bg-dark font-weight-bold text-white">
+=======
+            <div class="modal-header bg-body-secondary font-weight-bold text-black">
+>>>>>>> 74359c0d6097fad34d5222f0190d3674af346238
                 <h4 class="modal-title">Información del cliente</h4>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -104,13 +108,38 @@
     </div>
 </div>
 
+<<<<<<< HEAD
 @section scripts {
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+=======
+<div class="modal fade" id="mdlEliminarCliente" tabindex="-1" aria-labelledby="mdlLabelEliminarCliente" data-bs-backdrop="static" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-body-secondar text-dark">
+                <h4 class="modal-title" id="mdlLabelEliminarCliente">Confirmación de Eliminación</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>¿Está seguro de que desea eliminar el cliente <strong id="clienteNombre"></strong>?</p>
+                <input type="hidden" id="clienteIdEliminar" value="0" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" onclick="EliminarCliente()">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts {
+>>>>>>> 74359c0d6097fad34d5222f0190d3674af346238
     <script>
         var dataTable;
         var selectRow;
 
+<<<<<<< HEAD
         // Configuración de DataTable
         dataTable = $("#tbdata").DataTable({
             responsive: true,
@@ -166,11 +195,76 @@
                 $("#correoCliente").val(data.Correo);
                 $("#telefonoCliente").val(data.Telefono);
                 $("#cboEstado").val(data.Estado ? "1" : "0");
+=======
+        $(document).ready(function () {
+            // Configuración de DataTable
+            dataTable = $("#tbdata").DataTable({
+                responsive: true,
+                ordering: false,
+                "ajax": {
+                    url: '@Url.Action("ListarCliente", "Cliente")',
+                    type: "GET",
+                    dataType: "json"
+                },
+                "columns": [
+                    { "data": "Id" },
+                    { "data": "Codigo" },
+                    { "data": "Nombres" },
+                    { "data": "Apellido1" },
+                    { "data": "Apellido2" },
+                    { "data": "Correo"},
+                    { "data": "Telefono" },
+                    {
+                        "data": "Estado",
+                        "render": function (valor) {
+                            return valor ? '<span class="badge bg-info">Activo</span>' : '<span class="badge bg-danger">No Activo</span>';
+                        }
+                    },
+                    {
+                        "data": null,
+                        "render": function (data, type, row) {
+                            return `<button type="button" class="btn btn-primary btn-sm edit-btn"><i class="fas fa-pen"></i></button>` +
+                                `<button type="button" class="btn btn-danger btn-sm ms-2"><i class="fas fa-trash"></i></button>`;
+                        },
+                        "orderable": false,
+                        "searchable": false,
+                        "width": "80px"
+                    }
+                ],
+                "language": {
+                    "url": "https://cdn.datatables.net/plug-ins/1.11.3/i18n/es_es.json"
+                }
+            });
+        });
+
+        function AbrirModal(data) {
+
+            // Limpia los campos del modal
+            $("#clienteId").val(0);
+            $('#codigo').val("");
+            $('#nombrecliente').val("");
+            $('#apellidoUnoCliente').val("");
+            $('#apellidoDosCliente').val("");
+            $('#correoCliente').val("");
+            $('#telefonoCliente').val("");
+            $('#cboEstado').val("1");
+
+            if (data != null) {
+                $("#clienteId").val(data.Id);
+                $('#codigo').val(data.Codigo);
+                $('#nombrecliente').val(data.Nombres);
+                $('#apellidoUnoCliente').val(data.Apellido1);
+                $('#apellidoDosCliente').val(data.Apellido2);
+                $('#correoCliente').val(data.Correo);
+                $('#telefonoCliente').val(data.Telefono);
+                $('#cboEstado').val(data.Estado == true ? 1 : 0);
+>>>>>>> 74359c0d6097fad34d5222f0190d3674af346238
             }
 
             $("#mdlClienteAdd").modal("show");
         }
 
+<<<<<<< HEAD
         // Limpia los campos del modal
         function LimpiarCampos() {
             $("#clienteId").val(0);
@@ -200,6 +294,17 @@
         function GuardarCliente() {
             if (!ValidarFormulario()) return;
 
+=======
+        // Evento para abrir el modal de edición con datos del cliente seleccionado
+        $('#tbdata tbody').on('click', '.edit-btn', function () {
+
+            selectRow = $(this).closest('tr');
+            var data = dataTable.row(selectRow).data();
+            AbrirModal(data);
+        });
+
+        function GuardarCliente() {
+>>>>>>> 74359c0d6097fad34d5222f0190d3674af346238
             var cliente = {
                 Id: $("#clienteId").val(),
                 Codigo: $("#codigo").val(),
@@ -211,6 +316,7 @@
                 Estado: $("#cboEstado").val() == "1"
             };
 
+<<<<<<< HEAD
             Swal.fire({
                 title: "¿Está seguro?",
                 text: "¿Desea guardar este cliente?",
@@ -287,3 +393,77 @@
         });
     </script>
 }
+=======
+            $.ajax({
+                url: '@Url.Action("GuardarCliente", "Cliente")', // URL del controlador para guardar cliente
+                type: "POST",
+                data: JSON.stringify(cliente),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    if (response.success) {
+                        // Si es un nuevo proveedor, lo agregamos a la tabla
+                        if (clienter.Id == 0) {
+                            dataTable.row.add(response.data).draw(false);
+                        } else {
+                            // Si es una actualización, actualizamos la fila seleccionada
+                            dataTable.row(selectRow).data(response.data).draw(false);
+                        }
+
+                        // Mostrar mensaje de éxito
+                        alert(response.message);
+                    } else {
+                        // Mostrar mensaje de error
+                        alert(response.message);
+                    }
+                },
+                error: function () {
+                    alert("Ocurrió un error al guardar al cliente.");
+                }
+            });
+
+            // Cierra el modal
+            $("#mdlClienteAdd").modal("hide");
+        }
+
+        // Evento para abrir el modal de confirmación de eliminación
+        $('#tbdata tbody').on('click', '.btn-danger', function () {
+            selectRow = $(this).closest('tr');
+            var data = dataTable.row(selectRow).data();
+
+            // Configura los datos en el modal
+            $("#clienteNombre").text(data.Nombres + " " + data.Apellido1);
+            $("#clienteIdEliminar").val(data.Id);
+
+            // Muestra el modal
+            $("#mdlEliminarCliente").modal("show");
+        });
+
+        // Función para eliminar un cliente
+        function EliminarCliente() {
+            var clienteId = $("#clienteIdEliminar").val();
+
+            $.ajax({
+                url: '@Url.Action("EliminarCliente", "Cliente")',
+                type: 'POST',
+                data: JSON.stringify({ id: clienteId }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    if (response.success) {
+                        dataTable.row(selectRow).remove().draw(false);
+                        alert(response.message);
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function () {
+                    alert("Ocurrió un error al eliminar al cliente");
+                }
+            });
+
+            $("#mdlEliminarCliente").modal("hide");
+        }
+    </script>
+}
+>>>>>>> 74359c0d6097fad34d5222f0190d3674af346238

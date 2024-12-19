@@ -23,16 +23,9 @@ namespace CapaDatosWeb.Modelado
     
         [Key]
         public int Id { get; set; }
-
-        [Required(ErrorMessage = "El código es obligatorio.")]
-        [StringLength(10, ErrorMessage = "El código no puede tener más de 10 caracteres.")]
         public string Codigo { get; set; }
-
-        [Required(ErrorMessage = "El nombre es obligatoria")]
-        [StringLength(50, ErrorMessage = "El nombre no puede tener más de 50 caracteres.")]
         public string Nombre { get; set; }
-
-        public Nullable<System.DateTime> FechaCreacion { get; set; } = DateTime.Now;
+        public Nullable<System.DateTime> FechaCreacion { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Rol> Rol { get; set; }
