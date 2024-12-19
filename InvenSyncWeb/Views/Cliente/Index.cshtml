@@ -98,7 +98,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-success" onclick=" GuardarCliente()">Guardar</button>
+                <button type="button" class="btn btn-primary" onclick=" GuardarCliente()">Guardar</button>
             </div>
         </div>
     </div>
@@ -166,6 +166,8 @@
                 $("#telefonoCliente").val(data.Telefono);
                 $("#cboEstado").val(data.Estado ? "1" : "0");
             }
+
+            $("#mdlClienteAdd").modal("show");
         }
 
         // Limpia los campos del modal
