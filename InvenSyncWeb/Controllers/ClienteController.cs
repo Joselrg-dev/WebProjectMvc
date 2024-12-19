@@ -51,10 +51,7 @@ namespace InvenSyncWeb.Controllers
                 var errorMessage = _clienteService.ValidarAntesCrear(cliente);
                 if (string.IsNullOrEmpty(errorMessage) && cliente.Id == 0)
                 {
-<<<<<<< HEAD
                     cliente.Codigo = _clienteService.GenerarCodigoCliente();
-=======
->>>>>>> 74359c0d6097fad34d5222f0190d3674af346238
                     bool idCliente = _clienteService.Crear(cliente);
                     return CreateResponse(true, "Cliente registrado exitosamente", new { idCliente });
                 }
