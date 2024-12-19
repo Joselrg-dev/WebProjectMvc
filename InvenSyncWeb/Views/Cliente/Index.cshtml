@@ -50,7 +50,15 @@
 <div class="modal fade modal-lg" id="mdlClienteAdd" tabindex="-1" aria-labelledby="mdlLabelClienteAdd" data-bs-backdrop="static" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
+<<<<<<< HEAD
+            <div class="modal-header bg-dark font-weight-bold text-white">
+=======
+<<<<<<< HEAD
+            <div class="modal-header bg-dark font-weight-bold text-white">
+=======
             <div class="modal-header bg-body-secondary font-weight-bold text-black">
+>>>>>>> 74359c0d6097fad34d5222f0190d3674af346238
+>>>>>>> 1b92e5864cf91c71890d50c87e94f880ca339278
                 <h4 class="modal-title">Información del cliente</h4>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -104,6 +112,15 @@
     </div>
 </div>
 
+<<<<<<< HEAD
+@section scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+=======
+<<<<<<< HEAD
+@section scripts {
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+=======
 <div class="modal fade" id="mdlEliminarCliente" tabindex="-1" aria-labelledby="mdlLabelEliminarCliente" data-bs-backdrop="static" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -125,10 +142,77 @@
 
 
 @section scripts {
+>>>>>>> 74359c0d6097fad34d5222f0190d3674af346238
+>>>>>>> 1b92e5864cf91c71890d50c87e94f880ca339278
     <script>
         var dataTable;
         var selectRow;
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 1b92e5864cf91c71890d50c87e94f880ca339278
+        // Configuración de DataTable
+        dataTable = $("#tbdata").DataTable({
+            responsive: true,
+            ordering: false,
+            ajax: {
+                url: '@Url.Action("ListarCliente", "Cliente")',
+                type: "GET",
+                dataType: "json"
+            },
+            columns: [
+                { data: "Id" },
+                { data: "Codigo" },
+                { data: "Nombres" },
+                { data: "Apellido1" },
+                { data: "Apellido2" },
+                { data: "Correo" },
+                { data: "Telefono" },
+                {
+                    data: "Estado",
+                    render: function (valor) {
+                        return valor
+                            ? '<span class="badge bg-info">Activo</span>'
+                            : '<span class="badge bg-danger">No Activo</span>';
+                    }
+                },
+                {
+                    data: null,
+                    render: function (data, type, row) {
+                        return `
+                            <button type="button" class="btn btn-primary btn-sm edit-btn"><i class="fas fa-pen"></i></button>
+                            <button type="button" class="btn btn-danger btn-sm ms-2 delete-btn"><i class="fas fa-trash"></i></button>`;
+                    },
+                    orderable: false,
+                    searchable: false,
+                    width: "80px"
+                }
+            ],
+            language: {
+                url: "https://cdn.datatables.net/plug-ins/1.11.3/i18n/es_es.json"
+            }
+        });
+
+        // Abre el modal con datos del cliente
+        function AbrirModal(data) {
+            LimpiarCampos();
+
+            if (data != null) {
+                $("#clienteId").val(data.Id);
+                $("#codigo").val(data.Codigo);
+                $("#nombrecliente").val(data.Nombres);
+                $("#apellidoUnoCliente").val(data.Apellido1);
+                $("#apellidoDosCliente").val(data.Apellido2);
+                $("#correoCliente").val(data.Correo);
+                $("#telefonoCliente").val(data.Telefono);
+                $("#cboEstado").val(data.Estado ? "1" : "0");
+<<<<<<< HEAD
+            }
+        }
+
+=======
+=======
         $(document).ready(function () {
             // Configuración de DataTable
             dataTable = $("#tbdata").DataTable({
@@ -191,11 +275,48 @@
                 $('#correoCliente').val(data.Correo);
                 $('#telefonoCliente').val(data.Telefono);
                 $('#cboEstado').val(data.Estado == true ? 1 : 0);
+>>>>>>> 74359c0d6097fad34d5222f0190d3674af346238
             }
 
             $("#mdlClienteAdd").modal("show");
         }
 
+<<<<<<< HEAD
+>>>>>>> 1b92e5864cf91c71890d50c87e94f880ca339278
+        // Limpia los campos del modal
+        function LimpiarCampos() {
+            $("#clienteId").val(0);
+            $("#codigo").val("");
+            $("#nombrecliente").val("");
+            $("#apellidoUnoCliente").val("");
+            $("#apellidoDosCliente").val("");
+            $("#correoCliente").val("");
+            $("#telefonoCliente").val("");
+            $("#cboEstado").val("1");
+        }
+
+        // Validación del formulario
+        function ValidarFormulario() {
+            if ($("#codigo").val().trim() === "" || $("#nombrecliente").val().trim() === "" || $("#apellidoUnoCliente").val().trim() === "") {
+                Swal.fire({
+                    icon: "error",
+                    title: "Error de Validación",
+                    text: "Por favor, complete los campos obligatorios (Código, Nombre, Primer Apellido)."
+                });
+                return false;
+            }
+            return true;
+        }
+
+<<<<<<< HEAD
+        function GuardarCliente() {
+            if (!ValidarFormulario()) return;
+=======
+        // Guardar cliente
+        function GuardarCliente() {
+            if (!ValidarFormulario()) return;
+
+=======
         // Evento para abrir el modal de edición con datos del cliente seleccionado
         $('#tbdata tbody').on('click', '.edit-btn', function () {
 
@@ -205,6 +326,8 @@
         });
 
         function GuardarCliente() {
+>>>>>>> 74359c0d6097fad34d5222f0190d3674af346238
+>>>>>>> 1b92e5864cf91c71890d50c87e94f880ca339278
             var cliente = {
                 Id: $("#clienteId").val(),
                 Codigo: $("#codigo").val(),
@@ -216,6 +339,90 @@
                 Estado: $("#cboEstado").val() == "1"
             };
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 1b92e5864cf91c71890d50c87e94f880ca339278
+            Swal.fire({
+                title: "¿Está seguro?",
+                text: "¿Desea guardar este cliente?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Sí, guardar"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '@Url.Action("GuardarCliente", "Cliente")',
+                        type: "POST",
+                        data: JSON.stringify(cliente),
+                        contentType: "application/json; charset=utf-8",
+                        success: function (response) {
+                            if (response.success) {
+                                Swal.fire("Guardado", response.message, "success");
+                                dataTable.ajax.reload();
+                                $("#mdlClienteAdd").modal("hide");
+                            } else {
+                                Swal.fire("Error", response.message, "error");
+                            }
+                        },
+                        error: function () {
+                            Swal.fire("Error", "Ocurrió un error al guardar el cliente.", "error");
+                        }
+                    });
+                }
+            });
+        }
+
+        // Evento para editar cliente
+        $("#tbdata tbody").on("click", ".edit-btn", function () {
+            selectRow = $(this).closest("tr");
+            var data = dataTable.row(selectRow).data();
+            AbrirModal(data);
+        });
+
+        // Eliminar cliente
+        $("#tbdata tbody").on("click", ".delete-btn", function () {
+            selectRow = $(this).closest("tr");
+            var data = dataTable.row(selectRow).data();
+
+            Swal.fire({
+                title: "¿Está seguro?",
+                text: `¿Desea eliminar el cliente ${data.Nombres} ${data.Apellido1}?`,
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Sí, eliminar"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '@Url.Action("EliminarCliente", "Cliente")',
+                        type: "POST",
+                        data: JSON.stringify({ id: data.Id }),
+                        contentType: "application/json; charset=utf-8",
+                        success: function (response) {
+                            if (response.success) {
+                                Swal.fire("Eliminado", response.message, "success");
+                                dataTable.ajax.reload();
+                            } else {
+                                Swal.fire("Error", response.message, "error");
+                            }
+                        },
+                        error: function () {
+                            Swal.fire("Error", "Ocurrió un error al eliminar el cliente.", "error");
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+<<<<<<< HEAD
+}
+=======
+}
+=======
             $.ajax({
                 url: '@Url.Action("GuardarCliente", "Cliente")', // URL del controlador para guardar cliente
                 type: "POST",
@@ -288,3 +495,5 @@
         }
     </script>
 }
+>>>>>>> 74359c0d6097fad34d5222f0190d3674af346238
+>>>>>>> 1b92e5864cf91c71890d50c87e94f880ca339278

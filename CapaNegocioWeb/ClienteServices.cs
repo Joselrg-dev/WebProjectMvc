@@ -10,7 +10,11 @@ namespace CapaNegocioWeb
 {
     public class ClienteServices : CrudServices<Cliente>
     {
+<<<<<<< HEAD
+        private readonly InvenSyncEntity _db;
+=======
         private InvenSyncEntity _db;
+>>>>>>> 74359c0d6097fad34d5222f0190d3674af346238
 
         public ClienteServices(InvenSyncEntity entity) : base(entity)
         {
@@ -59,5 +63,32 @@ namespace CapaNegocioWeb
 
             return string.Empty;
         }
+<<<<<<< HEAD
+
+        public string GenerarCodigoCliente()
+        {
+            // Obtener el último cliente registrado (puedes usar Entity Framework o similar)
+            var ultimoCliente = _db.Cliente
+                                 .OrderByDescending(c => c.Id) // Ordenar por ID para obtener el último registro
+                                 .FirstOrDefault();
+
+            string nuevoCodigo;
+
+            if (ultimoCliente == null || string.IsNullOrEmpty(ultimoCliente.Codigo))
+            {
+                // Si no hay clientes, empieza desde 0001
+                nuevoCodigo = "CLI0001";
+            }
+            else
+            {
+                // Extraer el número y sumarle 1
+                int numero = int.Parse(ultimoCliente.Codigo.Substring(3)) + 1;
+                nuevoCodigo = "CLI" + numero.ToString("D4"); // Formato con 4 dígitos
+            }
+
+            return nuevoCodigo;
+        }
+=======
+>>>>>>> 74359c0d6097fad34d5222f0190d3674af346238
     }
 }

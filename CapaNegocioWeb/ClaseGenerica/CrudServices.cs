@@ -14,7 +14,11 @@ namespace CapaNegocioWeb.ClaseGenerica
         /// <summary>
         /// Conexion a la BD
         /// </summary>
+<<<<<<< HEAD
+        private readonly DbContext db;
+=======
         private DbContext db;
+>>>>>>> 74359c0d6097fad34d5222f0190d3674af346238
         public CrudServices(DbContext db)
         {
             this.db = db;

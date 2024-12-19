@@ -70,6 +70,7 @@ namespace InvenSyncWeb.Controllers
                 var errorMessage = _proveedorService.ValidarAntesCrear(proveedor);
                 if (string.IsNullOrEmpty(errorMessage) && proveedor.Id == 0)
                 {
+
                     bool idProveedor = _proveedorService.Crear(proveedor);
                     return CreateResponse(true, "Proveedor registrado exitosamente", new { idProveedor });
                 }

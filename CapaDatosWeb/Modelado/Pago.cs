@@ -19,7 +19,11 @@ namespace CapaDatosWeb.Modelado
         public int Id { get; set; }
         public Nullable<int> FacturaVentaId { get; set; }
         public Nullable<decimal> MontoPago { get; set; }
+<<<<<<< HEAD
+        public Nullable<System.DateTime> FechaPago { get; set; } = DateTime.Now;
+=======
         public Nullable<System.DateTime> FechaPago { get; set; }
+>>>>>>> 74359c0d6097fad34d5222f0190d3674af346238
         public string MetodoPago { get; set; }
         public string EstadoPago { get; set; }
     
