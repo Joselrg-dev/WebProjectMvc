@@ -1,9 +1,6 @@
 ﻿using CapaDatosWeb.Modelado;
 using CapaNegocioWeb;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace InvenSyncWeb.Controllers
@@ -18,7 +15,6 @@ namespace InvenSyncWeb.Controllers
             _db = new InvenSyncEntity();
             _clienteService = new ClienteServices(_db);
         }
-
 
         // GET: Cliente
         public ActionResult Index()

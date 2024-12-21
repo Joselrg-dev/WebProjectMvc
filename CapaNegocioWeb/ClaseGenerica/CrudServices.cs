@@ -4,8 +4,6 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CapaNegocioWeb.ClaseGenerica
 {
@@ -15,6 +13,7 @@ namespace CapaNegocioWeb.ClaseGenerica
         /// Conexion a la BD
         /// </summary>
         private readonly DbContext db;
+
         public CrudServices(DbContext db)
         {
             this.db = db;

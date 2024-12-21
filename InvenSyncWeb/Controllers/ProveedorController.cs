@@ -2,8 +2,6 @@
 using CapaNegocioWeb;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace InvenSyncWeb.Controllers
@@ -55,7 +53,7 @@ namespace InvenSyncWeb.Controllers
             catch (Exception ex)
             {
                 // Manejo de errores
-                return Json(new { success = false, message = "Error en el servidor, contactar al administrador." + ex.Message});
+                return Json(new { success = false, message = "Error en el servidor, contactar al administrador." + ex.Message });
             }
         }
 
@@ -70,7 +68,6 @@ namespace InvenSyncWeb.Controllers
                 var errorMessage = _proveedorService.ValidarAntesCrear(proveedor);
                 if (string.IsNullOrEmpty(errorMessage) && proveedor.Id == 0)
                 {
-
                     bool idProveedor = _proveedorService.Crear(proveedor);
                     return CreateResponse(true, "Proveedor registrado exitosamente", new { idProveedor });
                 }
