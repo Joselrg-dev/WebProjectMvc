@@ -11,7 +11,8 @@ namespace CapaDatosWeb.Modelado
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class FacturaVenta
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -21,6 +22,7 @@ namespace CapaDatosWeb.Modelado
             this.DetalleVenta = new HashSet<DetalleVenta>();
         }
     
+        [Key]
         public int Id { get; set; }
         public string Codigo { get; set; }
         public string Descripcion { get; set; }

@@ -53,10 +53,14 @@
   <ItemGroup>
     <Compile Include="CategoriaServices.cs" />
     <Compile Include="ClienteServices.cs" />
+    <Compile Include="DetalleVentaServices.cs" />
+    <Compile Include="FacturaVentaServices.cs" />
+    <Compile Include="PermisoServices.cs" />
     <Compile Include="ProductoServices.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProveedorServices.cs" />
     <Compile Include="ClaseGenerica\CrudServices.cs" />
+    <Compile Include="RolServices.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CapaDatosWeb\CapaDatosWeb.csproj">

@@ -11,9 +11,11 @@ namespace CapaDatosWeb.Modelado
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class DetalleVenta
     {
+        [Key]
         public int Id { get; set; }
         public Nullable<int> FacturaVentaId { get; set; }
         public Nullable<int> ProductoId { get; set; }
