@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="InvenSyncModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="InvenSyncModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Categoria">
           <Key>
             <PropertyRef Name="Id" />
@@ -38,6 +38,17 @@
           <Property Name="ProductoId" Type="int" />
           <Property Name="Cantidad" Type="int" Nullable="false" />
           <Property Name="PrecioCompra" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Subtotal" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DetalleVenta">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FacturaVentaId" Type="int" />
+          <Property Name="ProductoId" Type="int" />
+          <Property Name="Cantidad" Type="int" Nullable="false" />
+          <Property Name="PrecioVenta" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="Subtotal" Type="decimal" Precision="18" Scale="2" Nullable="false" />
         </EntityType>
         <EntityType Name="FacturaCompra">
@@ -178,6 +189,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__DetalleVe__Factu__74AE54BC">
+          <End Role="FacturaVenta" Type="Self.FacturaVenta" Multiplicity="0..1" />
+          <End Role="DetalleVenta" Type="Self.DetalleVenta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FacturaVenta">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DetalleVenta">
+              <PropertyRef Name="FacturaVentaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__DetalleVe__Produ__75A278F5">
+          <End Role="Producto" Type="Self.Producto" Multiplicity="0..1" />
+          <End Role="DetalleVenta" Type="Self.DetalleVenta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Producto">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DetalleVenta">
+              <PropertyRef Name="ProductoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__FacturaCo__Prove__693CA210">
           <End Role="Proveedor" Type="Self.Proveedor" Multiplicity="0..1" />
           <End Role="FacturaCompra" Type="Self.FacturaCompra" Multiplicity="*" />
@@ -226,7 +261,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Movimient__Produ__75A278F5">
+        <Association Name="FK__Movimient__Produ__797309D9">
           <End Role="Producto" Type="Self.Producto" Multiplicity="0..1" />
           <End Role="MovimientoInventario" Type="Self.MovimientoInventario" Multiplicity="*" />
           <ReferentialConstraint>
@@ -238,7 +273,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Pago__FacturaVen__797309D9">
+        <Association Name="FK__Pago__FacturaVen__7D439ABD">
           <End Role="FacturaVenta" Type="Self.FacturaVenta" Multiplicity="0..1" />
           <End Role="Pago" Type="Self.Pago" Multiplicity="*" />
           <ReferentialConstraint>
@@ -302,6 +337,7 @@
           <EntitySet Name="Categoria" EntityType="Self.Categoria" Schema="SI4V" store:Type="Tables" />
           <EntitySet Name="Cliente" EntityType="Self.Cliente" Schema="SI4V" store:Type="Tables" />
           <EntitySet Name="DetalleCompra" EntityType="Self.DetalleCompra" Schema="SI4V" store:Type="Tables" />
+          <EntitySet Name="DetalleVenta" EntityType="Self.DetalleVenta" Schema="SI4V" store:Type="Tables" />
           <EntitySet Name="FacturaCompra" EntityType="Self.FacturaCompra" Schema="SI4V" store:Type="Tables" />
           <EntitySet Name="FacturaVenta" EntityType="Self.FacturaVenta" Schema="SI4V" store:Type="Tables" />
           <EntitySet Name="MovimientoInventario" EntityType="Self.MovimientoInventario" Schema="SI4V" store:Type="Tables" />
@@ -320,6 +356,14 @@
             <End Role="Producto" EntitySet="Producto" />
             <End Role="DetalleCompra" EntitySet="DetalleCompra" />
           </AssociationSet>
+          <AssociationSet Name="FK__DetalleVe__Factu__74AE54BC" Association="Self.FK__DetalleVe__Factu__74AE54BC">
+            <End Role="FacturaVenta" EntitySet="FacturaVenta" />
+            <End Role="DetalleVenta" EntitySet="DetalleVenta" />
+          </AssociationSet>
+          <AssociationSet Name="FK__DetalleVe__Produ__75A278F5" Association="Self.FK__DetalleVe__Produ__75A278F5">
+            <End Role="Producto" EntitySet="Producto" />
+            <End Role="DetalleVenta" EntitySet="DetalleVenta" />
+          </AssociationSet>
           <AssociationSet Name="FK__FacturaCo__Prove__693CA210" Association="Self.FK__FacturaCo__Prove__693CA210">
             <End Role="Proveedor" EntitySet="Proveedor" />
             <End Role="FacturaCompra" EntitySet="FacturaCompra" />
@@ -336,11 +380,11 @@
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="FacturaVenta" EntitySet="FacturaVenta" />
           </AssociationSet>
-          <AssociationSet Name="FK__Movimient__Produ__75A278F5" Association="Self.FK__Movimient__Produ__75A278F5">
+          <AssociationSet Name="FK__Movimient__Produ__797309D9" Association="Self.FK__Movimient__Produ__797309D9">
             <End Role="Producto" EntitySet="Producto" />
             <End Role="MovimientoInventario" EntitySet="MovimientoInventario" />
           </AssociationSet>
-          <AssociationSet Name="FK__Pago__FacturaVen__797309D9" Association="Self.FK__Pago__FacturaVen__797309D9">
+          <AssociationSet Name="FK__Pago__FacturaVen__7D439ABD" Association="Self.FK__Pago__FacturaVen__7D439ABD">
             <End Role="FacturaVenta" EntitySet="FacturaVenta" />
             <End Role="Pago" EntitySet="Pago" />
           </AssociationSet>
@@ -361,8 +405,7 @@
             <End Role="Usuario" EntitySet="Usuario" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="InvenSyncModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -436,6 +479,7 @@
           <NavigationProperty Name="Cliente" Relationship="Self.FK__FacturaVe__Clien__6D0D32F4" FromRole="FacturaVenta" ToRole="Cliente" />
           <NavigationProperty Name="Usuario" Relationship="Self.FK__FacturaVe__Usuar__6E01572D" FromRole="FacturaVenta" ToRole="Usuario" />
           <NavigationProperty Name="Pago" Relationship="Self.FK__Pago__FacturaVen__797309D9" FromRole="FacturaVenta" ToRole="Pago" />
+          <NavigationProperty Name="DetalleVenta" Relationship="InvenSyncModel.FK__DetalleVe__Factu__74AE54BC" FromRole="FacturaVenta" ToRole="DetalleVenta" />
         </EntityType>
         <EntityType Name="MovimientoInventario">
           <Key>
@@ -487,6 +531,7 @@
           <NavigationProperty Name="Categoria" Relationship="Self.FK__Producto__Catego__5EBF139D" FromRole="Producto" ToRole="Categoria" />
           <NavigationProperty Name="DetalleCompra" Relationship="Self.FK__DetalleCo__Produ__71D1E811" FromRole="Producto" ToRole="DetalleCompra" />
           <NavigationProperty Name="MovimientoInventario" Relationship="Self.FK__Movimient__Produ__75A278F5" FromRole="Producto" ToRole="MovimientoInventario" />
+          <NavigationProperty Name="DetalleVenta" Relationship="InvenSyncModel.FK__DetalleVe__Produ__75A278F5" FromRole="Producto" ToRole="DetalleVenta" />
         </EntityType>
         <EntityType Name="Proveedor">
           <Key>
@@ -710,7 +755,53 @@
             <End Role="Permiso" EntitySet="Permiso" />
             <End Role="Rol" EntitySet="Rol" />
           </AssociationSet>
+          <EntitySet Name="DetalleVenta" EntityType="InvenSyncModel.DetalleVenta" />
+          <AssociationSet Name="FK__DetalleVe__Factu__74AE54BC" Association="InvenSyncModel.FK__DetalleVe__Factu__74AE54BC">
+            <End Role="FacturaVenta" EntitySet="FacturaVenta" />
+            <End Role="DetalleVenta" EntitySet="DetalleVenta" />
+          </AssociationSet>
+          <AssociationSet Name="FK__DetalleVe__Produ__75A278F5" Association="InvenSyncModel.FK__DetalleVe__Produ__75A278F5">
+            <End Role="Producto" EntitySet="Producto" />
+            <End Role="DetalleVenta" EntitySet="DetalleVenta" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="DetalleVenta">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FacturaVentaId" Type="Int32" />
+          <Property Name="ProductoId" Type="Int32" />
+          <Property Name="Cantidad" Type="Int32" Nullable="false" />
+          <Property Name="PrecioVenta" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="Subtotal" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <NavigationProperty Name="FacturaVenta" Relationship="InvenSyncModel.FK__DetalleVe__Factu__74AE54BC" FromRole="DetalleVenta" ToRole="FacturaVenta" />
+          <NavigationProperty Name="Producto" Relationship="InvenSyncModel.FK__DetalleVe__Produ__75A278F5" FromRole="DetalleVenta" ToRole="Producto" />
+        </EntityType>
+        <Association Name="FK__DetalleVe__Factu__74AE54BC">
+          <End Type="InvenSyncModel.FacturaVenta" Role="FacturaVenta" Multiplicity="0..1" />
+          <End Type="InvenSyncModel.DetalleVenta" Role="DetalleVenta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FacturaVenta">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DetalleVenta">
+              <PropertyRef Name="FacturaVentaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__DetalleVe__Produ__75A278F5">
+          <End Type="InvenSyncModel.Producto" Role="Producto" Multiplicity="0..1" />
+          <End Type="InvenSyncModel.DetalleVenta" Role="DetalleVenta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Producto">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DetalleVenta">
+              <PropertyRef Name="ProductoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -878,6 +969,18 @@
               <ScalarProperty Name="Id" ColumnName="RolId" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="DetalleVenta">
+            <EntityTypeMapping TypeName="InvenSyncModel.DetalleVenta">
+              <MappingFragment StoreEntitySet="DetalleVenta">
+                <ScalarProperty Name="Subtotal" ColumnName="Subtotal" />
+                <ScalarProperty Name="PrecioVenta" ColumnName="PrecioVenta" />
+                <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
+                <ScalarProperty Name="ProductoId" ColumnName="ProductoId" />
+                <ScalarProperty Name="FacturaVentaId" ColumnName="FacturaVentaId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

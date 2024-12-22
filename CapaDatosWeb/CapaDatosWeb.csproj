@@ -63,6 +63,9 @@
     <Compile Include="Modelado\DetalleCompra.cs">
       <DependentUpon>InvenSyncModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Modelado\DetalleVenta.cs">
+      <DependentUpon>InvenSyncModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Modelado\FacturaCompra.cs">
       <DependentUpon>InvenSyncModel.tt</DependentUpon>
     </Compile>

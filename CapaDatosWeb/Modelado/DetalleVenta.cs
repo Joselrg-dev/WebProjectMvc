@@ -12,20 +12,16 @@ namespace CapaDatosWeb.Modelado
     using System;
     using System.Collections.Generic;
     
-    public partial class Permiso
+    public partial class DetalleVenta
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Permiso()
-        {
-            this.Rol = new HashSet<Rol>();
-        }
-    
         public int Id { get; set; }
-        public string Codigo { get; set; }
-        public string Nombre { get; set; }
-        public Nullable<System.DateTime> FechaCreacion { get; set; }
+        public Nullable<int> FacturaVentaId { get; set; }
+        public Nullable<int> ProductoId { get; set; }
+        public int Cantidad { get; set; }
+        public decimal PrecioVenta { get; set; }
+        public decimal Subtotal { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Rol> Rol { get; set; }
+        public virtual FacturaVenta FacturaVenta { get; set; }
+        public virtual Producto Producto { get; set; }
     }
 }

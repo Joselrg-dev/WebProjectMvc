@@ -11,8 +11,7 @@ namespace CapaDatosWeb.Modelado
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class Producto
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -20,17 +19,11 @@ namespace CapaDatosWeb.Modelado
         {
             this.DetalleCompra = new HashSet<DetalleCompra>();
             this.MovimientoInventario = new HashSet<MovimientoInventario>();
+            this.DetalleVenta = new HashSet<DetalleVenta>();
         }
     
-        [Key]
         public int Id { get; set; }
-
-        [Required(ErrorMessage = "El código es obligatorio.")]
-        [StringLength(10, ErrorMessage = "El código del producto no puede tener más de 10 caracteres.")]
         public string Codigo { get; set; }
-
-        [Required(ErrorMessage = "La descripción del producto es obligatorio.")]
-        [StringLength(50, ErrorMessage = "El descripción del producto no puede tener más de 50 caracteres.")]
         public string Descripcion { get; set; }
         public decimal PrecioCompra { get; set; }
         public decimal PrecioVenta { get; set; }
@@ -38,12 +31,14 @@ namespace CapaDatosWeb.Modelado
         public Nullable<int> CategoriaId { get; set; }
         public string Imagen { get; set; }
         public Nullable<bool> Estado { get; set; }
-        public Nullable<System.DateTime> FechaCreacion { get; set; } = DateTime.Now;
+        public Nullable<System.DateTime> FechaCreacion { get; set; }
     
         public virtual Categoria Categoria { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DetalleCompra> DetalleCompra { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MovimientoInventario> MovimientoInventario { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DetalleVenta> DetalleVenta { get; set; }
     }
 }

@@ -11,11 +11,9 @@ namespace CapaDatosWeb.Modelado
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class MovimientoInventario
     {
-        [Key]
         public int Id { get; set; }
         public Nullable<int> ProductoId { get; set; }
         public string TipoMovimiento { get; set; }

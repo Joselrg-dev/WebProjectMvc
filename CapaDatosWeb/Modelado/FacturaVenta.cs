@@ -11,17 +11,16 @@ namespace CapaDatosWeb.Modelado
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class FacturaVenta
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public FacturaVenta()
         {
             this.Pago = new HashSet<Pago>();
+            this.DetalleVenta = new HashSet<DetalleVenta>();
         }
     
-        [Key]
         public int Id { get; set; }
         public string Codigo { get; set; }
         public string Descripcion { get; set; }
@@ -35,5 +34,7 @@ namespace CapaDatosWeb.Modelado
         public virtual Usuario Usuario { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Pago> Pago { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DetalleVenta> DetalleVenta { get; set; }
     }
 }

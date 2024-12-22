@@ -11,15 +11,13 @@ namespace CapaDatosWeb.Modelado
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class Pago
     {
-        [Key]
         public int Id { get; set; }
         public Nullable<int> FacturaVentaId { get; set; }
         public Nullable<decimal> MontoPago { get; set; }
-        public Nullable<System.DateTime> FechaPago { get; set; } = DateTime.Now;
+        public Nullable<System.DateTime> FechaPago { get; set; }
         public string MetodoPago { get; set; }
         public string EstadoPago { get; set; }
     

@@ -11,8 +11,7 @@ namespace CapaDatosWeb.Modelado
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class Usuario
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -22,7 +21,6 @@ namespace CapaDatosWeb.Modelado
             this.FacturaVenta = new HashSet<FacturaVenta>();
         }
     
-        [Key]
         public int Id { get; set; }
         public string Codigo { get; set; }
         public string NombreCompleto { get; set; }
@@ -31,7 +29,7 @@ namespace CapaDatosWeb.Modelado
         public string Telefono { get; set; }
         public Nullable<bool> Estado { get; set; }
         public Nullable<int> RolId { get; set; }
-        public Nullable<System.DateTime> FechaCreacion { get; set; } = DateTime.Now;
+        public Nullable<System.DateTime> FechaCreacion { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FacturaCompra> FacturaCompra { get; set; }

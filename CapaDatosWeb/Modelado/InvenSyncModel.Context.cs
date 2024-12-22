@@ -37,5 +37,6 @@ namespace CapaDatosWeb.Modelado
         public virtual DbSet<Proveedor> Proveedor { get; set; }
         public virtual DbSet<Rol> Rol { get; set; }
         public virtual DbSet<Usuario> Usuario { get; set; }
+        public virtual DbSet<DetalleVenta> DetalleVenta { get; set; }
     }
 }

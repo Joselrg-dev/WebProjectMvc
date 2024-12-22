@@ -11,8 +11,7 @@ namespace CapaDatosWeb.Modelado
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class Categoria
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -20,19 +19,12 @@ namespace CapaDatosWeb.Modelado
         {
             this.Producto = new HashSet<Producto>();
         }
-
-        [Key]
+    
         public int Id { get; set; }
-
-        [Required(ErrorMessage = "El código es obligatorio.")]
-        [StringLength(10, ErrorMessage = "El código no puede tener más de 10 caracteres.")]
         public string Codigo { get; set; }
-
-        [Required(ErrorMessage = "La descripción es obligatoria")]
-        [StringLength(50, ErrorMessage = "El código no puede tener más de 50 caracteres.")]
         public string Descripcion { get; set; }
         public Nullable<bool> Estado { get; set; }
-        public Nullable<System.DateTime> FechaCreacion { get; set; } = DateTime.Now;
+        public Nullable<System.DateTime> FechaCreacion { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Producto> Producto { get; set; }
