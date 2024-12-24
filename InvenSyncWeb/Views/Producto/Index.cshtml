@@ -1,0 +1,288 @@
+﻿@model List<CapaDatosWeb.Modelado.Producto>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+<div class="card shadow mb-4">
+    <div class="card-header py-3 bg-second-primary">
+        <h6 class="m-0 font-weight-bold text-white">Lista de Productos</h6>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm-3">
+                <button class="btn btn-success" data-toggle="modal" data-target="#mdlProductoAdd" onclick="AbrirModalProducto(null)"><i class="fas fa-plus-circle"></i> Nuevo Producto</button>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-sm-12">
+                <table class="table table-bordered" id="tbdataProducto" cellspacing="0" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Codigo</th>
+                            <th>Descripción</th>
+                            <th>P. Compra</th>
+                            <th>P. Venta</th>
+                            <th>Stock</th>
+                            <th>Cantidad</th>
+                            <th>Imagen</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--  Modal-->
+<div class="modal fade" id="mdlProductoAdd" tabindex="-1" role="dialog" data-bs-backdrop="static" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6>Detalle Producto</h6>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <input type="hidden" value="0" id="productoId">
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <div class="form-row">
+                                <div class="form-group col-sm-6">
+                                    <label for="txtCodigoBarra">Codigo Barra</label>
+                                    <input type="text" class="form-control form-control-sm input-validar" id="txtCodigoBarra" name="Codigo Barra">
+                                </div>
+                                <div class="form-group col-sm-6">
+                                    <label for="txtImagen">Imagen</label>
+                                    <input type="text" class="form-control form-control-sm input-validar" id="txtMarcaImagen" name="MarcaImagen">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-sm-12">
+                                    <label for="txtDescripcion">Descripción</label>
+                                    <input type="text" class="form-control form-control-sm input-validar" id="txtDescripcion" name="Descripcion">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-sm-6">
+                                    <label for="cboCategoria">Categoria</label>
+                                    <select class="form-control form-control-sm" id="cboCategoria">
+                                        <option value="0">seleccionar</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-sm-6">
+                                    <label for="txtStock">Stock</label>
+                                    <input type="text" class="form-control form-control-sm input-validar" id="txtStock" name="Stock">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-sm-6">
+                                    <label for="txtPrecioVenta">Precio Venta</label>
+                                    <input type="text" class="form-control form-control-sm input-validar" id="txtPrecioVenta" name="PrecioVenta">
+                                </div>
+                                <div class="form-group col-sm-6">
+                                    <label for="txtPrecioCompra">Precio Compra</label>
+                                    <input type="text" class="form-control form-control-sm input-validar" id="txtPrecioCompra" name="PrecioCompra">
+                                </div>
+                                <div class="form-group col-sm-6">
+                                    <label for="cboEstado">Estado</label>
+                                    <select class="form-control form-control-sm" id="cboEstado">
+                                        <option value="1">Activo</option>
+                                        <option value="0">No Activo</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-sm-6">
+                                    <label for="txtImagen">Imagen</label>
+                                    <input class="form-control-file" type="file" id="txtImagen" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <img id="imgProducto" style="max-width:200px;" src="https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=300" class="rounded mx-auto d-block" alt="...">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary btn-sm" type="button" id="btnGuardar">Guardar</button>
+                <button class="btn btn-danger btn-sm" type="button" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        var dataTable;
+
+        // Configuración DataTable para Producto
+        dataTable = $("#tbdataProducto").DataTable({
+            responsive: true,
+            ordering: false,
+            ajax: {
+                url: '@Url.Action("ListarProducto", "Producto")',
+                type: "GET",
+                dataType: "json",
+                dataSrc: ""
+            },
+            columns: [
+                { data: "Codigo" },
+                { data: "Descripcion" },
+                { data: "PrecioVenta" },
+                { data: "PrecioCompra" },
+                { data: "Stock" },
+                {
+                    data: "Estado",
+                    render: function (valor) {
+                        return valor
+                            ? '<span class="badge bg-success">Activo</span>'
+                            : '<span class="badge bg-warning">No Activo</span>';
+                    }
+                },
+                {
+                    data: "Imagen",
+                    render: function (imagen) {
+                        return imagen
+                            ? `<img src="${imagen}" alt="Imagen" style="width:50px; height:50px; object-fit:cover;" />`
+                            : "No disponible";
+                    }
+                },
+                {
+                    data: null,
+                    render: function (data, type, row) {
+                        return `
+                            <button type="button" class="btn btn-primary btn-sm" onclick="AbrirModalProducto(${JSON.stringify(row)})">
+                                <i class="fas fa-pen"></i>
+                            </button>
+                            <button type="button" class="btn btn-danger btn-sm ms-2" onclick="EliminarProducto(${row.Id})">
+                                <i class="fas fa-trash"></i>
+                            </button>`;
+                    },
+                    orderable: false,
+                    searchable: false,
+                    width: "80px"
+                }
+            ],
+            language: {
+                url: "https://cdn.datatables.net/plug-ins/1.11.3/i18n/es_es.json"
+            }
+        });
+
+        // Abrir modal para nuevo producto o editar
+        function AbrirModalProducto(data = null) {
+            LimpiarCampos();
+
+            if (data) {
+                $("#productoId").val(data.Id);
+                $("#codigo").val(data.Codigo);
+                $("#descripcion").val(data.Descripcion);
+                $("#precioVenta").val(data.PrecioVenta);
+                $("#precioCompra").val(data.PrecioCompra);
+                $("#stock").val(data.Stock);
+                $("#estado").val(data.Estado ? "1" : "0");
+                $("#imagenPreview").attr("src", data.Imagen || "").show();
+            }
+
+            $("#mdlProductoAdd").modal("show");
+        }
+
+        // Limpiar campos del formulario
+        function LimpiarCampos() {
+            $("#productoId").val(0);
+            $("#codigo").val("");
+            $("#descripcion").val("");
+            $("#precioVenta").val("");
+            $("#precioCompra").val("");
+            $("#stock").val("");
+            $("#estado").val("1");
+            $("#imagenPreview").hide();
+            $("#imagen").val(null);
+        }
+
+        // Guardar o actualizar producto
+        function GuardarProducto() {
+            const formData = new FormData();
+            formData.append("Id", $("#productoId").val());
+            formData.append("Codigo", $("#codigo").val());
+            formData.append("Descripcion", $("#descripcion").val());
+            formData.append("PrecioVenta", $("#precioVenta").val());
+            formData.append("PrecioCompra", $("#precioCompra").val());
+            formData.append("Stock", $("#stock").val());
+            formData.append("Estado", $("#estado").val() === "1");
+            const imagen = $("#imagen")[0].files[0];
+            if (imagen) {
+                formData.append("Imagen", imagen);
+            }
+
+            // Validación básica
+            if (!$("#codigo").val() || !$("#descripcion").val()) {
+                Swal.fire("Error", "Todos los campos son obligatorios.", "error");
+                return;
+            }
+
+            $.ajax({
+                url: '@Url.Action("GuardarProducto", "Producto")',
+                type: "POST",
+                processData: false,
+                contentType: false,
+                data: formData,
+                success: function (response) {
+                    if (response.success) {
+                        Swal.fire("Éxito", "Producto guardado correctamente.", "success");
+                        $("#mdlProductoAdd").modal("hide");
+                        dataTable.ajax.reload();
+                    } else {
+                        Swal.fire("Error", response.message, "error");
+                    }
+                },
+                error: function () {
+                    Swal.fire("Error", "Ocurrió un error al guardar el producto.", "error");
+                }
+            });
+        }
+
+        // Eliminar producto
+        function EliminarProducto(id) {
+            Swal.fire({
+                title: "¿Estás seguro?",
+                text: "No podrás revertir esta acción.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Sí, eliminar"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '@Url.Action("EliminarProducto", "Producto")',
+                        type: "POST",
+                        data: { id },
+                        success: function (response) {
+                            if (response.success) {
+                                Swal.fire("Eliminado", "Producto eliminado correctamente.", "success");
+                                dataTable.ajax.reload();
+                            } else {
+                                Swal.fire("Error", response.message, "error");
+                            }
+                        },
+                        error: function () {
+                            Swal.fire("Error", "Ocurrió un error al eliminar el producto.", "error");
+                        }
+                    });
+                }
+            });
+        }
+    </script>
+}
