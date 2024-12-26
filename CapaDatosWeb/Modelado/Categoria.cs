@@ -24,7 +24,7 @@ namespace CapaDatosWeb.Modelado
         public string Codigo { get; set; }
         public string Descripcion { get; set; }
         public Nullable<bool> Estado { get; set; }
-        public Nullable<System.DateTime> FechaCreacion { get; set; }
+        public Nullable<System.DateTime> FechaCreacion { get; set; } = DateTime.Today;
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Producto> Producto { get; set; }

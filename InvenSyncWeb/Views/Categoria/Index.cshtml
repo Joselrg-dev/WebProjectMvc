@@ -1,9 +1,8 @@
-﻿@model List<CapaDatosWeb.Modelado.Cliente>
-
+﻿@model List<CapaDatosWeb.Modelado.Categoria>
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    string descripcion = "Lista de Clientes";
+    string descripcion = "Lista de categorias";
 }
 
 <hr />
@@ -11,13 +10,16 @@
     <div class="col-sm-12">
         <div class="card shadow mb-5">
             <div class="card-header bg-body-secondary text-dark" style="font-weight:700">
-                <i class="fa fa-users"></i>
+                <i class="fa fa-tag"></i>
                 @descripcion
             </div>
             <div class="card-body">
                 <div class="row">
                     <div class="col-sm-4">
-                        <button type="button" id="btnNuevoCliente" class="btn btn-sm btn-success" data-bs-toggle="modal" style="font-weight:700" onclick="AbrirModal(null)"><i class="fas fa-plus-circle me-2"></i>Agregar Nuevo Cliente</button>
+                        <button type="button" id="btnNuevaCategoria" class="btn btn-success btn-sm" data-bs-toggle="modal" style="font-weight:700" onclick="AbrirModal(null)">
+                            <i class="fas fa-plus-circle me-2"></i>
+                            Agregar Nueva Categoria
+                        </button>
                     </div>
                 </div>
                 <hr />
@@ -28,11 +30,7 @@
                                 <tr class="text-success-emphasis">
                                     <th class="text-center">Id</th>
                                     <th class="text-center">Código</th>
-                                    <th class="text-center">Nombre</th>
-                                    <th class="text-center">1er. Apellido</th>
-                                    <th class="text-center">2do. Apellido</th>
-                                    <th class="text-center">Correo</th>
-                                    <th class="text-center">Telefono</th>
+                                    <th class="text-center">Descripción</th>
                                     <th class="text-center">Estado</th>
                                     <th class="text-center">Acciones</th>
                                 </tr>
@@ -47,43 +45,27 @@
     </div>
 </div>
 
-<div class="modal fade modal-lg" id="mdlClienteAdd" tabindex="-1" aria-labelledby="mdlLabelClienteAdd" data-bs-backdrop="static" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<!-- Modal -->
+<div class="modal fade" id="modalCategoria" tabindex="-1" aria-labelledby="categoriaModalLabel" data-bs-backdrop="static" aria-hidden="true">
+    <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header bg-dark font-weight-bold text-white">
-                <h4 class="modal-title">Información del cliente</h4>
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="categoriaModalLabel">Información General</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form>
-                    <div class="row g-3">
-                        <input id="clienteId" type="hidden" value="0" />
+                    <div class="row g-2">
+                        <input id="categoriaId" type="hidden" value="0" />
 
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <label for="codigo" class="form-label" style="font-weight:bold">Código</label>
                             <input type="text" class="form-control form-control-sm" id="codigo" name="codigo" required>
                         </div>
-                        <div class="col-md-4">
-                            <label for="nombrecliente" class="form-label" style="font-weight:bold">Nombre Completo</label>
-                            <input type="text" class="form-control form-control-sm" id="nombrecliente" name="nombrecliente" required>
+                        <div class="col-md-6">
+                            <label for="descripcion" class="form-label" style="font-weight:bold">Descripción</label>
+                            <input type="text" class="form-control form-control-sm" id="descripcion" name="descripcion" required>
                         </div>
-                        <div class="col-md-4">
-                            <label for="apellidoUnoCliente" class="form-label" style="font-weight:bold">Primer Apellido</label>
-                            <input type="text" class="form-control form-control-sm" id="apellidoUnoCliente" name="apellidoUnoCliente" required>
-                        </div>
-                        <div class="col-md-4">
-                            <label for="apellidoDosCliente" class="form-label" style="font-weight:bold">Segundo Apellido</label>
-                            <input type="text" class="form-control form-control-sm" id="apellidoDosCliente" name="apellidoDosCliente">
-                        </div>
-                        <div class="col-md-4">
-                            <label for="correoCliente" class="form-label" style="font-weight:bold">Correo</label>
-                            <input type="text" class="form-control form-control-sm" id="correoCliente" name="correoCliente">
-                        </div>
-                        <div class="col-md-4">
-                            <label for="telefonoCliente" class="form-label" style="font-weight:bold">Telefono</label>
-                            <input type="text" class="form-control form-control-sm" id="telefonoCliente" name="telefonoCliente">
-                        </div>
-
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label for="cboEstado" class="form-label" style="font-weight:bold">Estado</label>
@@ -98,7 +80,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary" onclick=" GuardarCliente()">Guardar</button>
+                <button type="button" class="btn btn-primary">Guardar</button>
             </div>
         </div>
     </div>
@@ -115,18 +97,14 @@
             responsive: true,
             ordering: false,
             ajax: {
-                url: '@Url.Action("ListarCliente", "Cliente")',
+                url: '@Url.Action("ListarCategoria", "Categoria")',
                 type: "GET",
                 dataType: "json"
             },
             columns: [
                 { data: "Id" },
                 { data: "Codigo" },
-                { data: "Nombres" },
-                { data: "Apellido1" },
-                { data: "Apellido2" },
-                { data: "Correo" },
-                { data: "Telefono" },
+                { data: "Descripcion" },
                 {
                     data: "Estado",
                     render: function (valor) {
@@ -152,50 +130,27 @@
             }
         });
 
-        // Abre el modal con datos del cliente
+        function LimpiarCampos() {
+            $("#categoriaId").val(0);
+            $("#codigo").val("");
+            $("#descripcion").val("");
+            $("#cboEstado").val(1);
+        }
+
         function AbrirModal(data) {
             LimpiarCampos();
 
             if (data != null) {
-                $("#clienteId").val(data.Id);
+                $("#categoriaId").val(data.Id);
                 $("#codigo").val(data.Codigo);
-                $("#nombrecliente").val(data.Nombres);
-                $("#apellidoUnoCliente").val(data.Apellido1);
-                $("#apellidoDosCliente").val(data.Apellido2);
-                $("#correoCliente").val(data.Correo);
-                $("#telefonoCliente").val(data.Telefono);
-                $("#cboEstado").val(data.Estado ? "1" : "0");
+                $("#descripcion").val(data.Descripcion);
+                $("#cboEstado").val(data.Estado ? 1 : 0);
             }
 
-            $("#mdlClienteAdd").modal("show");
+            $("#modalCategoria").modal("show");
         }
 
-        // Limpia los campos del modal
-        function LimpiarCampos() {
-            $("#clienteId").val(0);
-            $("#codigo").val("");
-            $("#nombrecliente").val("");
-            $("#apellidoUnoCliente").val("");
-            $("#apellidoDosCliente").val("");
-            $("#correoCliente").val("");
-            $("#telefonoCliente").val("");
-            $("#cboEstado").val("1");
-        }
-
-        // Validación del formulario
-        function ValidarFormulario() {
-            if ($("#codigo").val().trim() === "" || $("#nombrecliente").val().trim() === "" || $("#apellidoUnoCliente").val().trim() === "") {
-                Swal.fire({
-                    icon: "error",
-                    title: "Error de Validación",
-                    text: "Por favor, complete los campos obligatorios (Código, Nombre, Primer Apellido)."
-                });
-                return false;
-            }
-            return true;
-        }
-
-        // Evento para abrir el modal de edición con datos del cliente seleccionado
+        // Evento para abrir el modal de edición con datos de la categoria seleccionada
         $('#tbdata tbody').on('click', '.edit-btn', function () {
 
             selectRow = $(this).closest('tr');
@@ -203,55 +158,42 @@
             AbrirModal(data);
         });
 
-        function GuardarCliente() {
-            if (!ValidarFormulario()) return
+        function GuardarCategoria() {
+            var categoria = {
 
-            var cliente = {
-                Id: $("#clienteId").val(),
+                Id: $("#categoriaId").val(),
                 Codigo: $("#codigo").val(),
-                Nombres: $("#nombrecliente").val(),
-                Apellido1: $("#apellidoUnoCliente").val(),
-                Apellido2: $("#apellidoDosCliente").val(),
-                Correo: $("#correoCliente").val(),
-                Telefono: $("#telefonoCliente").val(),
-                Estado: $("#cboEstado").val() == "1"
+                Descripcion: $("#descripcion").val(),
+                Estado: $("#categoriaId").val() == "1"
             };
 
             $.ajax({
-                url: '@Url.Action("GuardarCliente", "Cliente")',
-                type: "POST",
-                data: JSON.stringify(cliente),
+                url: '@Url.Action("GuardarCategoria", "Categoria")',
+                type: "Post",
+                data: JSON.stringify(categoria),
                 contentType: "application/json; charset=utf-8",
                 success: function (response) {
                     if (response.success) {
-                          Swal.fire("Guardado", response.message, "success");
-                          dataTable.ajax.reload();
-                          $("#mdlClienteAdd").modal("hide");
+                        Swal.fire("Guardado", response.message, "success");
+                        dataTable.ajax.reload();
+                        $("#modalCategoria").modal("hide");
                     } else {
                         Swal.fire("Error", response.message, "error");
                     }
                 },
                 error: function () {
-                    Swal.fire("Error", "Ocurrió un error al guardar el cliente.", "error");
+                    Swal.fire("Error", "Ocurrió un error al guardar la categoria.", "error");
                 }
             });
         }
 
-        // Evento para editar cliente
-        $("#tbdata tbody").on("click", ".edit-btn", function () {
-            selectRow = $(this).closest("tr");
-            var data = dataTable.row(selectRow).data();
-            AbrirModal(data);
-        });
-
-        // Eliminar cliente
         $("#tbdata tbody").on("click", ".delete-btn", function () {
             selectRow = $(this).closest("tr");
             var data = dataTable.row(selectRow).data();
 
             Swal.fire({
                 title: "¿Está seguro?",
-                text: `¿Desea eliminar el cliente ${data.Nombres} ${data.Apellido1}?`,
+                text: `¿Desea eliminar la categoria ${data.Codigo} ${data.Descripcion}?`,
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#d33",
@@ -260,7 +202,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: '@Url.Action("EliminarCliente", "Cliente")',
+                        url: '@Url.Action("EliminarCategoria", "Categoria")',
                         type: "POST",
                         data: JSON.stringify({ id: data.Id }),
                         contentType: "application/json; charset=utf-8",
@@ -273,7 +215,7 @@
                             }
                         },
                         error: function () {
-                            Swal.fire("Error", "Ocurrió un error al eliminar el cliente.", "error");
+                            Swal.fire("Error", "Ocurrió un error al eliminar la categoria.", "error");
                         }
                     });
                 }
