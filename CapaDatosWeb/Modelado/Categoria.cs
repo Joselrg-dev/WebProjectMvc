@@ -11,7 +11,8 @@ namespace CapaDatosWeb.Modelado
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class Categoria
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -20,9 +21,17 @@ namespace CapaDatosWeb.Modelado
             this.Producto = new HashSet<Producto>();
         }
     
+        [Key]
         public int Id { get; set; }
+
+        [Required(ErrorMessage = "El campo Código es obligatorio.")]
+        [StringLength(50, ErrorMessage = "El Código no puede exceder los 15 caracteres.")]
         public string Codigo { get; set; }
+
+        [Required(ErrorMessage = "El campo Descripción es obligatorio.")]
+        [StringLength(50, ErrorMessage = "El Descripción no puede exceder los 50 caracteres.")]
         public string Descripcion { get; set; }
+
         public Nullable<bool> Estado { get; set; }
         public Nullable<System.DateTime> FechaCreacion { get; set; } = DateTime.Today;
     

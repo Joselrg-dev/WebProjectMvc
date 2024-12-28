@@ -11,14 +11,25 @@ namespace CapaDatosWeb.Modelado
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class MovimientoInventario
     {
+        [Key]
         public int Id { get; set; }
+
+        [Required(ErrorMessage = "El campo ProductoId es obligatorio.")]
         public Nullable<int> ProductoId { get; set; }
+
+        [Required(ErrorMessage = "El campo Descripción es obligatorio.")]
+        [StringLength(100, ErrorMessage = "La Descripción no puede exceder los 100 caracteres.")]
         public string TipoMovimiento { get; set; }
+
+        [Required(ErrorMessage = "El campo Cantidad es obligatorio.")]
+        [Range(1, int.MaxValue, ErrorMessage = "La Cantidad debe ser al menos 1.")]
         public int Cantidad { get; set; }
-        public Nullable<System.DateTime> FechaMovimiento { get; set; }
+
+        public Nullable<System.DateTime> FechaMovimiento { get; set; } = DateTime.Today;
     
         public virtual Producto Producto { get; set; }
     }

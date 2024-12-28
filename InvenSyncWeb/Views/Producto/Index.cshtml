@@ -7,6 +7,7 @@
 
 <div class="card shadow">
     <div class="card-header bg-primary text-white">
+        <i class="fa fa-boxes"></i>
         <h6 class="m-0">Productos Disponibles</h6>
     </div>
     <div class="card-body">
@@ -21,8 +22,8 @@
                     <tr>
                         <th>ID</th>
                         <th>Código</th>
-                        <th>Descripción</th>
                         <th>Imagen</th>
+                        <th>Descripción</th>
                         <th>Precio Compra</th>
                         <th>Precio Venta</th>
                         <th>Stock</th>
@@ -36,7 +37,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="mdlProductoAdd" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="mdlProductoAdd" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <!-- Header -->
@@ -51,7 +52,7 @@
                     <input type="hidden" id="productoId" value="0" />
 
                     <!-- Información General -->
-                    <fieldset class="border p-3 mb-3">
+                    <fieldset class="border p-3 mb-2">
                         <legend class="float-none w-auto px-3">Información General</legend>
                         <div class="row g-3">
                             <div class="form-group col-sm-6">
@@ -66,7 +67,7 @@
                     </fieldset>
 
                     <!-- Detalles del Producto -->
-                    <fieldset class="border p-3 mb-3">
+                    <fieldset class="border p-3 mb-2">
                         <legend class="float-none w-auto px-3">Detalles del Producto</legend>
                         <div class="row g-3">
                             <div class="form-group col-sm-6">
@@ -90,7 +91,7 @@
                     </fieldset>
 
                     <!-- Precios -->
-                    <fieldset class="border p-3 mb-3">
+                    <fieldset class="border p-3 mb-2">
                         <legend class="float-none w-auto px-3">Precios</legend>
                         <div class="row g-3">
                             <div class="form-group col-sm-6">
@@ -105,7 +106,7 @@
                     </fieldset>
 
                     <!-- Imagen -->
-                    <fieldset class="border p-3 mb-3">
+                    <fieldset class="border p-3 mb-2">
                         <legend class="float-none w-auto px-3">Imagen</legend>
                         <div class="row g-3 align-items-center">
                             <div class="form-group col-sm-8">
@@ -113,7 +114,7 @@
                                 <input class="form-control-file" type="file" id="txtImagen">
                             </div>
                             <div class="col-sm-4 text-center">
-                                <img id="imgProducto" style="max-width:150px;" src="" class="rounded mx-auto d-block" alt="Imagen del producto">
+                                <img id="imgProducto" style="max-width:200px;" src="" class="rounded mx-auto d-block" alt="Imagen del producto">
                             </div>
                         </div>
                     </fieldset>

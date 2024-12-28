@@ -11,16 +11,31 @@ namespace CapaDatosWeb.Modelado
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class DetalleCompra
     {
+        [Key]
         public int Id { get; set; }
+
+        [Required(ErrorMessage = "El campo FacturaCompraId es obligatorio.")]
         public Nullable<int> FacturaCompraId { get; set; }
+
+        [Required(ErrorMessage = "El campo ProductoId es obligatorio.")]
         public Nullable<int> ProductoId { get; set; }
+
+        [Required(ErrorMessage = "El campo Cantidad es obligatorio.")]
+        [Range(1, int.MaxValue, ErrorMessage = "La Cantidad debe ser al menos 1.")]
         public int Cantidad { get; set; }
+
+        [Required(ErrorMessage = "El campo PrecioCompra es obligatorio.")]
+        [Range(0.01, double.MaxValue, ErrorMessage = "El Precio de Compra debe ser mayor a 0.")]
         public decimal PrecioCompra { get; set; }
+
+        [Required(ErrorMessage = "El campo Subtotal es obligatorio.")]
+        [Range(0.01, double.MaxValue, ErrorMessage = "El Subtotal debe ser mayor a 0.")]
         public decimal Subtotal { get; set; }
-    
+
         public virtual FacturaCompra FacturaCompra { get; set; }
         public virtual Producto Producto { get; set; }
     }

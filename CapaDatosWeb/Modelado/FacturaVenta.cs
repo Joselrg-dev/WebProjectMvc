@@ -24,12 +24,30 @@ namespace CapaDatosWeb.Modelado
     
         [Key]
         public int Id { get; set; }
+
+        [Required(ErrorMessage = "El campo Código es obligatorio.")]
+        [StringLength(15, ErrorMessage = "El Código no puede exceder los 15 caracteres.")]
         public string Codigo { get; set; }
+
+        [Required(ErrorMessage = "El campo Descripción es obligatorio.")]
+        [StringLength(50, ErrorMessage = "La Descripción no puede exceder los 50 caracteres.")]
         public string Descripcion { get; set; }
+
+        [Required(ErrorMessage = "El campo MontoVenta es obligatorio.")]
+        [Range(0.01, double.MaxValue, ErrorMessage = "El Monto Venta debe ser mayor a 0.")]
         public Nullable<decimal> MontoVenta { get; set; }
+
+        [Required(ErrorMessage = "El campo ClienteId es obligatorio.")]
         public Nullable<int> ClienteId { get; set; }
+
+        [Required(ErrorMessage = "El campo UsuarioId es obligatorio.")]
         public Nullable<int> UsuarioId { get; set; }
+
+        [Required(ErrorMessage = "El campo FechaFactura es obligatorio.")]
+        [DataType(DataType.Date, ErrorMessage = "La FechaFactura debe ser una fecha válida.")]
         public Nullable<System.DateTime> FechaFactura { get; set; }
+
+        [Required(ErrorMessage = "El campo TipoSalidaId es obligatorio.")]
         public Nullable<int> TipoSalidaId { get; set; }
     
         public virtual Cliente Cliente { get; set; }

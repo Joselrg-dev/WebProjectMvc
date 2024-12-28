@@ -11,7 +11,8 @@ namespace CapaDatosWeb.Modelado
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class Cliente
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -20,15 +21,33 @@ namespace CapaDatosWeb.Modelado
             this.FacturaVenta = new HashSet<FacturaVenta>();
         }
     
+        [Key]
         public int Id { get; set; }
+
+        [Required(ErrorMessage = "El campo Código es obligatorio.")]
+        [StringLength(15, ErrorMessage = "El Código no puede exceder los 15 caracteres.")]
         public string Codigo { get; set; }
+
+        [Required(ErrorMessage = "El campo Descripción es obligatorio.")]
+        [StringLength(50, ErrorMessage = "El Descripción no puede exceder los 50 caracteres.")]
         public string Nombres { get; set; }
+
+        [Required(ErrorMessage = "El campo Apellido 1 es obligatorio.")]
+        [StringLength(50, ErrorMessage = "El Apellido 1 no puede exceder los 50 caracteres.")]
         public string Apellido1 { get; set; }
+
         public string Apellido2 { get; set; }
+
+        [EmailAddress(ErrorMessage = "El formato del correo electrónico es inválido.")]
+        [StringLength(100, ErrorMessage = "El Correo no puede exceder los 100 caracteres.")]
         public string Correo { get; set; }
+
+        [Phone(ErrorMessage = "El formato del teléfono es inválido.")]
+        [StringLength(20, ErrorMessage = "El Teléfono no puede exceder los 20 caracteres.")]
         public string Telefono { get; set; }
+
         public Nullable<bool> Estado { get; set; }
-        public Nullable<System.DateTime> FechaCreacion { get; set; }
+        public Nullable<System.DateTime> FechaCreacion { get; set; } = DateTime.Today;
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FacturaVenta> FacturaVenta { get; set; }
