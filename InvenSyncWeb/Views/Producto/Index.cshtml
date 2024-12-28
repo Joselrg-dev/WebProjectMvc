@@ -1,118 +1,129 @@
 ﻿@model List<CapaDatosWeb.Modelado.Producto>
-@{
-    ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
 
-<h2>Index</h2>
-<div class="card shadow mb-4">
-    <div class="card-header py-3 bg-second-primary">
-        <h6 class="m-0 font-weight-bold text-white">Lista de Productos</h6>
+@{ ViewBag.Title = "Lista de Productos";
+    Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+<h2 class="text-center my-3">Gestión de Productos</h2>
+
+<div class="card shadow">
+    <div class="card-header bg-primary text-white">
+        <h6 class="m-0">Productos Disponibles</h6>
     </div>
     <div class="card-body">
-        <div class="row">
-            <div class="col-sm-3">
-                <button class="btn btn-success" data-toggle="modal" data-target="#mdlProductoAdd" onclick="AbrirModalProducto(null)"><i class="fas fa-plus-circle"></i> Nuevo Producto</button>
-            </div>
+        <div class="d-flex justify-content-between mb-3">
+            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#mdlProductoAdd" onclick="AbrirModalProducto(null)">
+                <i class="fas fa-plus-circle"></i> Nuevo Producto
+            </button>
         </div>
-        <hr />
-        <div class="row">
-            <div class="col-sm-12">
-                <table class="table table-hover table-bordered" id="tbdataProducto" cellspacing="0" style="width:100%">
-                    <thead>
-                        <tr>
-                            <th>Id</th>
-                            <th>Codigo</th>
-                            <th>Descripción</th>
-                            <th>P. Compra</th>
-                            <th>P. Venta</th>
-                            <th>Stock</th>
-                            <th>Cantidad</th>
-                            <th>Imagen</th>
-                            <th>Estado</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-            </div>
+        <div>
+            <table id="tbdataProducto" class="table table-bordered table-striped" style="width:100%">
+                <thead class="bg-secondary text-white">
+                    <tr>
+                        <th>ID</th>
+                        <th>Código</th>
+                        <th>Descripción</th>
+                        <th>Imagen</th>
+                        <th>Precio Compra</th>
+                        <th>Precio Venta</th>
+                        <th>Stock</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
         </div>
     </div>
 </div>
 
-<!--  Modal-->
-<div class="modal fade" id="mdlProductoAdd" tabindex="-1" role="dialog" data-bs-backdrop="static" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+<div class="modal fade" id="mdlProductoAdd" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header">
-                <h6>Detalle Producto</h6>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
+            <!-- Header -->
+            <div class="modal-header bg-body-secondary font-weight-bold text-black">
+                <h5 class="modal-title">Detalle Producto</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+
+            <!-- Body -->
             <div class="modal-body">
-                <form>
-                    <input type="hidden" value="0" id="productoId">
-                    <div class="row">
-                        <div class="col-sm-8">
-                            <div class="form-row">
-                                <div class="form-group col-sm-6">
-                                    <label for="txtCodigoBarra">Codigo Barra</label>
-                                    <input type="text" class="form-control form-control-sm input-validar" id="txtCodigoBarra" name="Codigo Barra">
-                                </div>
+                <form id="formProducto">
+                    <input type="hidden" id="productoId" value="0" />
+
+                    <!-- Información General -->
+                    <fieldset class="border p-3 mb-3">
+                        <legend class="float-none w-auto px-3">Información General</legend>
+                        <div class="row g-3">
+                            <div class="form-group col-sm-6">
+                                <label for="txtCodigoBarra" class="form-label">Código Barra</label>
+                                <input type="text" class="form-control form-control-sm input-validar" id="txtCodigoBarra" name="Codigo Barra">
                             </div>
-                            <div class="form-row">
-                                <div class="form-group col-sm-6">
-                                    <label for="txtDescripcion">Descripción</label>
-                                    <input type="text" class="form-control form-control-sm input-validar" id="txtDescripcion" name="Descripcion">
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col-sm-6">
-                                    <label for="cboCategoria">Categoria</label>
-                                    <select class="form-control form-control-sm" id="cboCategoria">
-                                        <option value="0">seleccionar</option>
-                                    </select>
-                                </div>
-                                <div class="form-group col-sm-6">
-                                    <label for="txtStock">Stock</label>
-                                    <input type="text" class="form-control form-control-sm input-validar" id="txtStock" name="Stock">
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col-sm-6">
-                                    <label for="txtPrecioVenta">Precio Venta</label>
-                                    <input type="text" class="form-control form-control-sm input-validar" id="txtPrecioVenta" name="PrecioVenta">
-                                </div>
-                                <div class="form-group col-sm-6">
-                                    <label for="txtPrecioCompra">Precio Compra</label>
-                                    <input type="text" class="form-control form-control-sm input-validar" id="txtPrecioCompra" name="PrecioCompra">
-                                </div>
-                                <div class="form-group col-sm-6">
-                                    <label for="cboEstado">Estado</label>
-                                    <select class="form-control form-control-sm" id="cboEstado">
-                                        <option value="1">Activo</option>
-                                        <option value="0">No Activo</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col-sm-6">
-                                    <label for="txtImagen">Imagen</label>
-                                    <input class="form-control-file" type="file" id="txtImagen" />
-                                </div>
+                            <div class="form-group col-sm-6">
+                                <label for="txtDescripcion" class="form-label">Descripción</label>
+                                <input type="text" class="form-control form-control-sm input-validar" id="txtDescripcion" name="Descripcion">
                             </div>
                         </div>
-                        <div class="col-sm-4">
-                            <img id="imgProducto" style="max-width:200px;" src="" class="rounded mx-auto d-block" alt="Imagen del producto.">
+                    </fieldset>
+
+                    <!-- Detalles del Producto -->
+                    <fieldset class="border p-3 mb-3">
+                        <legend class="float-none w-auto px-3">Detalles del Producto</legend>
+                        <div class="row g-3">
+                            <div class="form-group col-sm-6">
+                                <label for="cboCategoria" class="form-label">Categoría</label>
+                                <select class="form-control form-control-sm" id="cboCategoria">
+                                    <option value="0">Seleccionar</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-sm-3">
+                                <label for="txtStock" class="form-label">Stock</label>
+                                <input type="number" class="form-control form-control-sm input-validar" id="txtStock" name="Stock">
+                            </div>
+                            <div class="form-group col-sm-3">
+                                <label for="cboEstado" class="form-label">Estado</label>
+                                <select class="form-control form-control-sm" id="cboEstado">
+                                    <option value="1">Activo</option>
+                                    <option value="0">No Activo</option>
+                                </select>
+                            </div>
                         </div>
-                    </div>
+                    </fieldset>
+
+                    <!-- Precios -->
+                    <fieldset class="border p-3 mb-3">
+                        <legend class="float-none w-auto px-3">Precios</legend>
+                        <div class="row g-3">
+                            <div class="form-group col-sm-6">
+                                <label for="txtPrecioVenta" class="form-label">Precio Venta</label>
+                                <input type="number" step="0.01" class="form-control form-control-sm input-validar" id="txtPrecioVenta" name="PrecioVenta">
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label for="txtPrecioCompra" class="form-label">Precio Compra</label>
+                                <input type="number" step="0.01" class="form-control form-control-sm input-validar" id="txtPrecioCompra" name="PrecioCompra">
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <!-- Imagen -->
+                    <fieldset class="border p-3 mb-3">
+                        <legend class="float-none w-auto px-3">Imagen</legend>
+                        <div class="row g-3 align-items-center">
+                            <div class="form-group col-sm-8">
+                                <label for="txtImagen" class="form-label">Subir Imagen</label>
+                                <input class="form-control-file" type="file" id="txtImagen">
+                            </div>
+                            <div class="col-sm-4 text-center">
+                                <img id="imgProducto" style="max-width:150px;" src="" class="rounded mx-auto d-block" alt="Imagen del producto">
+                            </div>
+                        </div>
+                    </fieldset>
                 </form>
             </div>
+
+            <!-- Footer -->
             <div class="modal-footer">
-                <button class="btn btn-primary btn-sm" type="button" id="btnGuardar">Guardar</button>
-                <button class="btn btn-danger btn-sm" type="button" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="GuardarProducto()">Guardar</button>
+                <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
             </div>
         </div>
     </div>
@@ -121,132 +132,184 @@
 @section scripts {
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        var dataTable;
 
-        // Configuración DataTable para Producto
-        dataTable = $("#tbdataProducto").DataTable({
-            responsive: true,
-            ordering: false,
-            ajax: {
-                url: '@Url.Action("ListarProducto", "Producto")',
-                type: "GET",
-                dataType: "json",
-                dataSrc: ""
-            },
-            columns: [
-                { data: "Codigo" },
-                { data: "Descripcion" },
-                { data: "PrecioVenta" },
-                { data: "PrecioCompra" },
-                { data: "Stock" },
-                {
-                    data: "Estado",
-                    render: function (valor) {
-                        return valor
-                            ? '<span class="badge bg-success">Activo</span>'
-                            : '<span class="badge bg-warning">No Activo</span>';
-                    }
+        // Inicialización DataTable
+        function initDataTable() {
+            return $("#tbdataProducto").DataTable({
+                responsive: true,
+                ordering: false,
+                ajax: {
+                    url: '@Url.Action("ListarProducto", "Producto")',
+                    type: "GET",
+                    dataType: "json",
+                    dataSrc: ""
                 },
-                {
-                    data: "Imagen",
-                    render: function (imagen) {
-                        return imagen
-                            ? `<img src="${imagen}" alt="Imagen" style="width:50px; height:50px; object-fit:cover;" />`
-                            : "No disponible";
-                    }
-                },
-                {
-                    data: null,
-                    render: function (data, type, row) {
-                        return `
-                            <button type="button" class="btn btn-primary btn-sm" onclick="AbrirModalProducto(${JSON.stringify(row)})">
-                                <i class="fas fa-pen"></i>
-                            </button>
-                            <button type="button" class="btn btn-danger btn-sm ms-2" onclick="EliminarProducto(${row.Id})">
-                                <i class="fas fa-trash"></i>
-                            </button>`;
+                columns: [
+                    { data: "Codigo" },
+                    { data: "Descripcion" },
+                    { data: "PrecioVenta" },
+                    { data: "PrecioCompra" },
+                    { data: "Stock" },
+                    {
+                        data: "Estado",
+                        render: renderEstado
                     },
-                    orderable: false,
-                    searchable: false,
-                    width: "80px"
+                    {
+                        data: "Imagen",
+                        render: renderImagen
+                    },
+                    {
+                        data: null,
+                        render: renderAcciones,
+                        orderable: false,
+                        searchable: false,
+                        width: "80px"
+                    }
+                ],
+                language: {
+                    url: "https://cdn.datatables.net/plug-ins/1.11.3/i18n/es_es.json"
                 }
-            ],
-            language: {
-                url: "https://cdn.datatables.net/plug-ins/1.11.3/i18n/es_es.json"
-            }
-        });
+            });
+        }
 
-        // Abrir modal para nuevo producto o editar
+        // Renderizar Estado
+        function renderEstado(valor) {
+            return valor
+                ? '<span class="badge bg-success">Activo</span>'
+                : '<span class="badge bg-warning">No Activo</span>';
+        }
+
+        // Renderizar Imagen
+        function renderImagen(imagen) {
+            return imagen
+                ? `<img src="${imagen}" alt="Imagen" style="width:50px; height:50px; object-fit:cover;" />`
+                : "No disponible";
+        }
+
+        // Renderizar Acciones
+        function renderAcciones(data, type, row) {
+            return `
+                <button class="btn btn-primary btn-sm" onclick="AbrirModalProducto(${JSON.stringify(row)})">
+                    <i class="fas fa-pen"></i>
+                </button>
+                <button class="btn btn-danger btn-sm ms-2" onclick="EliminarProducto(${row.Id})">
+                    <i class="fas fa-trash"></i>
+                </button>`;
+        }
+
+        // Abrir Modal
         function AbrirModalProducto(data = null) {
             LimpiarCampos();
-
-            if (data) {
-                $("#productoId").val(data.Id);
-                $("#codigo").val(data.Codigo);
-                $("#descripcion").val(data.Descripcion);
-                $("#precioVenta").val(data.PrecioVenta);
-                $("#precioCompra").val(data.PrecioCompra);
-                $("#stock").val(data.Stock);
-                $("#estado").val(data.Estado ? "1" : "0");
-                $("#imagenPreview").attr("src", data.Imagen || "").show();
-            }
-
+            if (data) cargarDatosProducto(data);
             $("#mdlProductoAdd").modal("show");
         }
 
-        // Limpiar campos del formulario
-        function LimpiarCampos() {
-            $("#productoId").val(0);
-            $("#codigo").val("");
-            $("#descripcion").val("");
-            $("#precioVenta").val("");
-            $("#precioCompra").val("");
-            $("#stock").val("");
-            $("#estado").val("1");
-            $("#imagenPreview").hide();
-            $("#imagen").val(null);
+        // Cargar Datos en Modal
+        function cargarDatosProducto(data) {
+            $("#productoId").val(data.Id);
+            $("#txtCodigoBarra").val(data.Codigo);
+            $("#txtDescripcion").val(data.Descripcion);
+            $("#txtPrecioVenta").val(data.PrecioVenta);
+            $("#txtPrecioCompra").val(data.PrecioCompra);
+            $("#txtStock").val(data.Stock);
+            $("#cboEstado").val(data.Estado ? "1" : "0");
+            $("#imgProducto").attr("src", data.Imagen || "").show();
         }
 
-        // Guardar o actualizar producto
-        function GuardarProducto() {
-            const formData = new FormData();
-            formData.append("Id", $("#productoId").val());
-            formData.append("Codigo", $("#codigo").val());
-            formData.append("Descripcion", $("#descripcion").val());
-            formData.append("PrecioVenta", $("#precioVenta").val());
-            formData.append("PrecioCompra", $("#precioCompra").val());
-            formData.append("Stock", $("#stock").val());
-            formData.append("Estado", $("#estado").val() === "1");
-            formData.append("Imagen", $("#imgProducto").data("ruta")); // Ruta de la imagen cargada
+        // Limpiar Campos
+        function LimpiarCampos() {
+            $("#formProducto")[0].reset();
+            $("#productoId").val(0);
+            $("#imgProducto").hide().removeAttr("src");
+        }
 
-            // Validación básica
-            if (!$("#codigo").val() || !$("#descripcion").val()) {
-                Swal.fire("Error", "Todos los campos son obligatorios.", "error");
-                return;
+        // Guardar Producto
+        async function GuardarProducto() {
+            const formData = new FormData($("#formProducto")[0]);
+            formData.append("Estado", $("#cboEstado").val() === "1");
+
+            if (!validarFormulario()) return;
+
+            try {
+                const response = await $.ajax({
+                    url: '@Url.Action("GuardarProducto", "Producto")',
+                    type: "POST",
+                    processData: false,
+                    contentType: false,
+                    data: formData
+                });
+
+                Swal.fire(response.success ? "Éxito" : "Error", response.message, response.success ? "success" : "error");
+                if (response.success) {
+                    $("#mdlProductoAdd").modal("hide");
+                    dataTable.ajax.reload();
+                }
+            } catch {
+                Swal.fire("Error", "Ocurrió un error al guardar el producto.", "error");
             }
+        }
+
+        // Validación de formulario
+        function validarFormulario() {
+            let valido = true;
+            $(".input-validar").each(function () {
+                if (!$(this).val().trim()) {
+                    $(this).addClass("is-invalid");
+                    valido = false;
+                } else {
+                    $(this).removeClass("is-invalid");
+                }
+            });
+            return valido;
+        }
+
+        // Llenar dropdown de categorías
+        function cargarCategorias() {
+            $.ajax({
+                url: '@Url.Action("ObtenerCategorias", "Producto")',
+                type: "GET",
+                success: function (data) {
+                    const cboCategoria = $("#cboCategoria");
+                    cboCategoria.empty();
+                    cboCategoria.append('<option value="0">Seleccionar</option>');
+                    data.forEach(categoria => {
+                        cboCategoria.append(`<option value="${categoria.Id}">${categoria.Descripcion}</option>`);
+                    });
+                },
+                error: function () {
+                    Swal.fire("Error", "No se pudieron cargar las categorías.", "error");
+                }
+            });
+        }
+
+        $('#txtImagen').on('change', function () {
+            let formData = new FormData();
+            let imagen = $(this)[0].files[0];
+
+            formData.append('imagen', imagen);
 
             $.ajax({
-                url: '@Url.Action("GuardarProducto", "Producto")',
-                type: "POST",
+                url: '@Url.Action("GuardarImagen", "Producto")',
+                type: 'POST',
                 processData: false,
                 contentType: false,
                 data: formData,
                 success: function (response) {
                     if (response.success) {
-                        Swal.fire("Éxito", "Producto guardado correctamente.", "success");
-                        $("#mdlProductoAdd").modal("hide");
-                        dataTable.ajax.reload();
+                        // Mostrar vista previa de la imagen
+                        $('#imgProducto').attr('src', response.ruta);
+                        $('#imgProducto').data('ruta', response.ruta); // Almacena la ruta para usarla al guardar
                     } else {
                         Swal.fire("Error", response.message, "error");
                     }
                 },
                 error: function () {
-                    Swal.fire("Error", "Ocurrió un error al guardar el producto.", "error");
+                    Swal.fire("Error", "Ocurrió un error al subir la imagen.", "error");
                 }
             });
-        }
+        });
 
-        // Eliminar producto
+         // Eliminar producto
         function EliminarProducto(id) {
             Swal.fire({
                 title: "¿Estás seguro?",
@@ -279,51 +342,11 @@
 
         }
 
-        $('#txtImagen').on('change', function () {
-            let formData = new FormData();
-            let imagen = $(this)[0].files[0];
-
-            formData.append('imagen', imagen);
-
-            $.ajax({
-                url: '@Url.Action("GuardarImagen", "Producto")',
-                type: 'POST',
-                processData: false,
-                contentType: false,
-                data: formData,
-                success: function (response) {
-                    if (response.success) {
-                        // Mostrar vista previa de la imagen
-                        $('#imgProducto').attr('src', response.ruta);
-                        $('#imgProducto').data('ruta', response.ruta); // Almacena la ruta para usarla al guardar
-                    } else {
-                        Swal.fire("Error", response.message, "error");
-                    }
-                },
-                error: function () {
-                    Swal.fire("Error", "Ocurrió un error al subir la imagen.", "error");
-                }
-            });
-        });
-
-        $(document).ready(function () {
-            // Llenar el dropdown de categorías
-            $.ajax({
-                url: '@Url.Action("ObtenerCategorias", "Producto")',
-                type: 'GET',
-                success: function (data) {
-                    let select = $('#cboCategoria');
-                    select.empty(); // Limpiar opciones previas
-                    select.append('<option value="0">Seleccionar</option>');
-
-                    data.forEach(categoria => {
-                        select.append(`<option value="${categoria.Id}">${categoria.Nombre}</option>`);
-                    });
-                },
-                error: function () {
-                    Swal.fire("Error", "No se pudieron cargar las categorías.", "error");
-                }
-            });
+        // Configuración Inicial
+        let dataTable;
+        $(document).ready(() => {
+            dataTable = initDataTable();
+            cargarCategorias();
         });
     </script>
 }

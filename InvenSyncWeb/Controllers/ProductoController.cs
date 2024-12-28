@@ -40,7 +40,7 @@ namespace InvenSyncWeb.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpGet]
         public JsonResult ObtenerCategorias()
         {
             var categorias = _db.Categoria
