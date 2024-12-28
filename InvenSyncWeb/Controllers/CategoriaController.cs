@@ -38,5 +38,33 @@ namespace InvenSyncWeb.Controllers
                 return HandleError(ex, "Error al listar categoria.");
             }
         }
+
+        [HttpPost]
+        public JsonResult GuardarCategoria(Categoria categoria)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return CreateResponse(false, "Datos inválidos", categoria);
+                }
+
+                var errorMessage = _categoria.ValidarAntesCrear(categoria);
+                if (string.IsNullOrEmpty(errorMessage) && categoria.Id == 0)
+                {
+                    bool idCategoria = _categoria.Crear(categoria);
+                    return CreateResponse(true, "Categoria registrado exitosamente", new { idCategoria });
+                }
+                else
+                {
+                    _categoria.Actualizar(categoria);
+                    return CreateResponse(true, "Categoria actualizado exitosamente", categoria);
+                }
+            }
+            catch (Exception ex)
+            {
+                return CreateResponse(false, "Error al registrar/actualizar el categoria.", ex.Message);
+            }
+        }
     }
 }
