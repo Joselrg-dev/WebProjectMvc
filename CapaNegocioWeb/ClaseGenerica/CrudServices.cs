@@ -40,8 +40,19 @@ namespace CapaNegocioWeb.ClaseGenerica
         /// <returns></returns>
         public bool Crear(T entidad)
         {
-            db.Entry(entidad).State = EntityState.Added;
-            return db.SaveChanges() > 0;
+            try
+            {
+                Console.WriteLine($"Entidad recibida: {Newtonsoft.Json.JsonConvert.SerializeObject(entidad)}");
+                db.Entry(entidad).State = EntityState.Added;
+                int resultado = db.SaveChanges();
+                Console.WriteLine($"Filas afectadas: {resultado}");
+                return resultado > 0;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al guardar la entidad: {ex.Message}");
+                return false;
+            }
         }
 
         /// <summary>

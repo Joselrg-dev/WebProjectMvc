@@ -1,34 +1,34 @@
 ﻿@model List<CapaDatosWeb.Modelado.Producto>
 
 @{ ViewBag.Title = "Lista de Productos";
-    Layout = "~/Views/Shared/_Layout.cshtml"; }
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string descripcion = "Lista de Productos"; }
 
 <h2 class="text-center my-3">Gestión de Productos</h2>
 
 <div class="card shadow">
-    <div class="card-header bg-primary text-white">
-        <i class="fa fa-boxes"></i>
-        <h6 class="m-0">Productos Disponibles</h6>
+    <div class="card-header bg-body-secondary">
+        <h5 class="m-0 font-weight-bold text-black"><i class="fas fa-boxes me-2"></i><strong>@descripcion</strong></h5>
     </div>
     <div class="card-body">
         <div class="d-flex justify-content-between mb-3">
-            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#mdlProductoAdd" onclick="AbrirModalProducto(null)">
-                <i class="fas fa-plus-circle"></i> Nuevo Producto
+            <button class="btn btn-success btn-sm fw-bold" style="font-weight:700" data-bs-toggle="modal" data-bs-target="#mdlProductoAdd" onclick="AbrirModalProducto(null)">
+                <i class="fas fa-plus-circle me-2"></i>Nuevo Producto
             </button>
         </div>
         <div>
-            <table id="tbdataProducto" class="table table-bordered table-striped" style="width:100%">
-                <thead class="bg-secondary text-white">
-                    <tr>
-                        <th>ID</th>
-                        <th>Código</th>
-                        <th>Imagen</th>
-                        <th>Descripción</th>
-                        <th>Precio Compra</th>
-                        <th>Precio Venta</th>
-                        <th>Stock</th>
-                        <th>Estado</th>
-                        <th>Acciones</th>
+            <table id="tbdataProducto" class="table table-hover table-bordered table-striped  nowrap compact" style="width:100%">
+                <thead class="bg-body-secondary">
+                    <tr class="text-success-emphasis">
+                        <th class="text-center">Id</th>
+                        <th class="text-center">Código</th>
+                        <th class="text-center">Imagen</th>
+                        <th class="text-center">Descripción</th>
+                        <th class="text-center">Precio Compra</th>
+                        <th class="text-center">Precio Venta</th>
+                        <th class="text-center">Stock</th>
+                        <th class="text-center">Estado</th>
+                        <th class="text-center">Acciones</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
@@ -38,87 +38,73 @@
 </div>
 
 <div class="modal fade" id="mdlProductoAdd" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <!-- Header -->
-            <div class="modal-header bg-body-secondary font-weight-bold text-black">
+            <div class="modal-header bg-black font-weight-bold text-white">
                 <h5 class="modal-title">Detalle Producto</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
             <!-- Body -->
             <div class="modal-body">
-                <form id="formProducto">
-                    <input type="hidden" id="productoId" value="0" />
+                <fieldset class="border p-3 mb-2">
+                    <form id="formProducto" class="row">
+                        <input type="hidden" id="productoId" value="0" />
 
-                    <!-- Información General -->
-                    <fieldset class="border p-3 mb-2">
-                        <legend class="float-none w-auto px-3">Información General</legend>
-                        <div class="row g-3">
-                            <div class="form-group col-sm-6">
-                                <label for="txtCodigoBarra" class="form-label">Código Barra</label>
-                                <input type="text" class="form-control form-control-sm input-validar" id="txtCodigoBarra" name="Codigo Barra">
+                        <div class="col-sm-3">
+                            <div class="mb-2">
+                                <img id="imgProducto" height="100" width="100" class="border rounded mx-auto d-block img-fluid" alt="Imagen del producto">
                             </div>
-                            <div class="form-group col-sm-6">
-                                <label for="txtDescripcion" class="form-label">Descripción</label>
-                                <input type="text" class="form-control form-control-sm input-validar" id="txtDescripcion" name="Descripcion">
+                            <div class="mb-2">
+                                <label for="txtImagen" class="form-label"></label>
+                                <input class="form-control-file" type="file" id="txtImagen" accept="image/pnj, image/jpg, image/jpeg">
                             </div>
                         </div>
-                    </fieldset>
 
-                    <!-- Detalles del Producto -->
-                    <fieldset class="border p-3 mb-2">
-                        <legend class="float-none w-auto px-3">Detalles del Producto</legend>
-                        <div class="row g-3">
-                            <div class="form-group col-sm-6">
-                                <label for="cboCategoria" class="form-label">Categoría</label>
+                        <div class="col-sm-3">
+                            <div class="mb-3">
+                                <label for="txtCodigoBarra" class="form-label" style="font-weight:bold">Código Barra</label>
+                                <input type="text" class="form-control form-control-sm input-validar" id="txtCodigoBarra" name="Codigo Barra" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="txtDescripcion" class="form-label" style="font-weight:bold">Descripción</label>
+                                <textarea type="text" class="form-control form-control-sm input-validar" id="txtDescripcion" name="Descripcion" required></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="cboCategoria" class="form-label" style="font-weight:bold">Categoría</label>
                                 <select class="form-control form-control-sm" id="cboCategoria">
                                     <option value="0">Seleccionar</option>
                                 </select>
                             </div>
-                            <div class="form-group col-sm-3">
-                                <label for="txtStock" class="form-label">Stock</label>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <div class="mb-3">
+                                <label for="txtStock" class="form-label" style="font-weight:bold">Stock</label>
                                 <input type="number" class="form-control form-control-sm input-validar" id="txtStock" name="Stock">
                             </div>
-                            <div class="form-group col-sm-3">
-                                <label for="cboEstado" class="form-label">Estado</label>
+                            <div class="mb-3">
+                                <label for="cboEstado" class="form-label" style="font-weight:bold">Estado</label>
                                 <select class="form-control form-control-sm" id="cboEstado">
                                     <option value="1">Activo</option>
                                     <option value="0">No Activo</option>
                                 </select>
                             </div>
                         </div>
-                    </fieldset>
 
-                    <!-- Precios -->
-                    <fieldset class="border p-3 mb-2">
-                        <legend class="float-none w-auto px-3">Precios</legend>
-                        <div class="row g-3">
-                            <div class="form-group col-sm-6">
-                                <label for="txtPrecioVenta" class="form-label">Precio Venta</label>
+                        <div class="col-sm-3">
+                            <div class="mb-3">
+                                <label for="txtPrecioVenta" class="form-label" style="font-weight:bold">Precio Venta</label>
                                 <input type="number" step="0.01" class="form-control form-control-sm input-validar" id="txtPrecioVenta" name="PrecioVenta">
                             </div>
-                            <div class="form-group col-sm-6">
-                                <label for="txtPrecioCompra" class="form-label">Precio Compra</label>
+                            <div class="mb-3">
+                                <label for="txtPrecioCompra" class="form-label" style="font-weight:bold">Precio Compra</label>
                                 <input type="number" step="0.01" class="form-control form-control-sm input-validar" id="txtPrecioCompra" name="PrecioCompra">
                             </div>
                         </div>
-                    </fieldset>
-
-                    <!-- Imagen -->
-                    <fieldset class="border p-3 mb-2">
-                        <legend class="float-none w-auto px-3">Imagen</legend>
-                        <div class="row g-3 align-items-center">
-                            <div class="form-group col-sm-8">
-                                <label for="txtImagen" class="form-label">Subir Imagen</label>
-                                <input class="form-control-file" type="file" id="txtImagen">
-                            </div>
-                            <div class="col-sm-4 text-center">
-                                <img id="imgProducto" style="max-width:200px;" src="" class="rounded mx-auto d-block" alt="Imagen del producto">
-                            </div>
-                        </div>
-                    </fieldset>
-                </form>
+                    </form>
+                </fieldset>
             </div>
 
             <!-- Footer -->
@@ -256,9 +242,12 @@
             $(".input-validar").each(function () {
                 if (!$(this).val().trim()) {
                     $(this).addClass("is-invalid");
+                    $(this).next('.invalid-feedback').remove(); // Eliminar mensajes anteriores
+                    $(this).after('<div class="invalid-feedback">Este campo es obligatorio.</div>');
                     valido = false;
                 } else {
                     $(this).removeClass("is-invalid");
+                    $(this).next('.invalid-feedback').remove(); // Eliminar mensajes anteriores
                 }
             });
             return valido;

@@ -6,6 +6,10 @@
     string descripcion = "Lista de Proveedores";
 }
 
+<ol class="breadcrumb mb-3">
+    <li class="breadcrumb-item">Gestión Principal</li>
+    <li class="breadcrumb-item active">Proveedores</li>
+</ol>
 <hr />
 <div class="card shadow mb-3">
     <div class="card-header py-3 bg-body-secondary">
@@ -15,14 +19,14 @@
         <div class="row">
             <div class="col-sm-4">
                 <!-- Botón para abrir el modal de agregar producto -->
-                <button type="button" id="nuevoProveedorBtn" class="btn btn-sm btn-success btn-sm fw-bold" data-bs-toggle="modal" onclick="ModalShow(null)"><i class="fas fa-plus-circle me-2"></i>Nuevo Proveedor</button>
+                <button type="button" id="nuevoProveedorBtn" class="btn btn-success btn-sm fw-bold" data-bs-toggle="modal" onclick="ModalShow(null)"><i class="fas fa-plus-circle me-2"></i>Nuevo Proveedor</button>
             </div>
         </div>
         <hr />
         <div class="row table-responsive">
             <div class="col-sm-12">
-                <table class="table table-hover table-striped table-bordered nowrap compact" id="tbdata" cellspacing="1" style="width:100%">
-                    <thead>
+                <table class="table table-hover table-bordered nowrap compact" id="tbdata" cellspacing="1" style="width:100%">
+                    <thead class="bg-body-secondary">
                         <tr class="success-emphasis">
                             <th class="text-center">Id</th>
                             <th class="text-center">Código</th>

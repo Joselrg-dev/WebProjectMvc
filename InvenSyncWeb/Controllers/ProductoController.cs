@@ -1,9 +1,9 @@
 ﻿using CapaDatosWeb.Modelado;
 using CapaNegocioWeb;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -31,12 +31,12 @@ namespace InvenSyncWeb.Controllers
         {
             try
             {
-                var producto = _productoService.GetAll();
-                return CreateResponse(true, "Producto generado exitosamente", producto);
+                var productos = _productoService.GetAll();
+                return CreateResponse(true, "Productos generados exitosamente", productos);
             }
             catch (Exception ex)
             {
-                return HandleError(ex, "Error al listar producto.");
+                return HandleError(ex, "Error al listar productos.");
             }
         }
 
@@ -50,21 +50,49 @@ namespace InvenSyncWeb.Controllers
         }
 
         [HttpPost]
-        public JsonResult GuardarImagen(HttpPostedFileBase imagen)
+        public async Task<JsonResult> GuardarImagen(HttpPostedFileBase imagen)
         {
-            if (imagen != null && imagen.ContentLength > 0)
+            try
             {
-                // Generar un nombre único para la imagen
+                if (imagen == null || imagen.ContentLength <= 0)
+                {
+                    return Json(new { success = false, message = "Archivo inválido." });
+                }
+
+                var validacion = ValidarImagen(imagen);
+                if (!validacion.success)
+                {
+                    return Json(validacion);
+                }
+
                 string nombreArchivo = Guid.NewGuid() + Path.GetExtension(imagen.FileName);
                 string ruta = Path.Combine(Server.MapPath("~/Content/Imagenes/Productos"), nombreArchivo);
 
-                // Guardar imagen en el servidor
-                imagen.SaveAs(ruta);
+                // Asegúrate de que la carpeta exista
+                Directory.CreateDirectory(Path.GetDirectoryName(ruta));
 
-                // Devolver la ruta de la imagen
-                return Json(new { success = true, ruta = "/Content/Imagenes/Productos/" + nombreArchivo });
+                await Task.Run(() => imagen.SaveAs(ruta));
+
+                var rutaRelativa = Url.Content("~/Content/Imagenes/Productos/" + nombreArchivo);
+                return Json(new { success = true, ruta = rutaRelativa });
             }
-            return Json(new { success = false, message = "No se pudo guardar la imagen." });
+            catch (Exception ex)
+            {
+                return HandleError(ex, "Error al guardar la imagen.");
+            }
+        }
+
+        private (bool success, string message) ValidarImagen(HttpPostedFileBase imagen)
+        {
+            var extensionesPermitidas = new[] { ".jpg", ".jpeg", ".png", ".gif" };
+            var extension = Path.GetExtension(imagen.FileName).ToLower();
+
+            if (!extensionesPermitidas.Contains(extension))
+            {
+                return (false, "Formato de archivo no permitido.");
+            }
+
+            return (true, string.Empty);
         }
 
         [HttpPost]
@@ -74,24 +102,71 @@ namespace InvenSyncWeb.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    return CreateResponse(false, "Datos inválidos", producto);
+                    var errores = ModelState.Values
+                        .SelectMany(v => v.Errors)
+                        .Select(e => e.ErrorMessage)
+                        .ToList();
+
+                    return Json(new { success = false, message = "Datos inválidos", errores });
                 }
 
                 var errorMessage = _productoService.ValidarAntesCrear(producto);
-                if (string.IsNullOrEmpty(errorMessage) && producto.Id == 0)
+                if (string.IsNullOrEmpty(errorMessage))
                 {
-                    bool idProducto = _productoService.Crear(producto);
-                    return CreateResponse(true, "Producto registrado exitosamente", new { idProducto });
+                    if (producto.Id == 0)
+                    {
+                        bool idProducto = _productoService.Crear(producto);
+                        if (idProducto)
+                        {
+                            return CreateResponse(true, "Producto registrado exitosamente", producto);
+                        }
+                        else
+                        {
+                            return CreateResponse(false, "Error al crear el producto.");
+                        }
+                    }
+                    else
+                    {
+                        bool actualizado = _productoService.Actualizar(producto);
+                        if (actualizado)
+                        {
+                            return CreateResponse(true, "Producto actualizado exitosamente", producto);
+                        }
+                        else
+                        {
+                            return CreateResponse(false, "Error al actualizar el producto.");
+                        }
+                    }
                 }
                 else
                 {
-                    _productoService.Actualizar(producto);
-                    return CreateResponse(true, "Producto actualizado exitosamente", producto);
+                    return Json(new { success = false, message = errorMessage });
                 }
             }
             catch (Exception ex)
             {
-                return CreateResponse(false, "Error al registrar/actualizar el producto.", ex.Message);
+                return HandleError(ex, "Error al guardar el producto.");
+            }
+        }
+
+        [HttpPost]
+        public JsonResult EliminarProducto(int id)
+        {
+            try
+            {
+                bool eliminado = _productoService.Eliminar(id);
+                if (eliminado)
+                {
+                    return CreateResponse(true, "Producto eliminado exitosamente");
+                }
+                else
+                {
+                    return CreateResponse(false, "Error al eliminar el producto.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return HandleError(ex, "Error al eliminar el producto.");
             }
         }
     }

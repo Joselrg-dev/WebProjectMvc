@@ -49,7 +49,6 @@
                             Tablero
                         </a>
                         <div class="sb-sidenav-menu-heading">Gestión Principal</div>
-                        <div class="sb-sidenav-menu-heading">Bodega</div>
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseBodega" aria-expanded="false">
                             <div class="sb-nav-link-icon"><i class="fas fa-warehouse"></i></div>
                             Inventario
@@ -57,12 +56,9 @@
                         </a>
                         <div class="collapse" id="collapseBodega" data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="layout-static.html"><i class="fas fa-tags me-2"></i>Categoría</a>
-                                <a class="nav-link" href="#!"><i class="fas fa-boxes me-2"></i>Producto</a>
-                                <a class="nav-link" href="@Url.Action("Index", "Proveedor")">
-                                    <div class="sb-nav-link-icon"><i class="fas fa-truck"></i></div>
-                                    Proveedores
-                                </a>
+                                <a class="nav-link" href="@Url.Action("Index", "Categoria")"><i class="fas fa-tags me-2"></i>Categoría</a>
+                                <a class="nav-link" href="@Url.Action("Index", "Producto")"><i class="fas fa-boxes me-2"></i>Producto</a>
+                                <a class="nav-link" href="@Url.Action("Index", "Proveedor")"><i class="fas fa-truck me-2"></i>Proveedores</a>
                             </nav>
                         </div>
 
@@ -72,7 +68,7 @@
                             <div class="sb-nav-link-icon"><i class="fas fa-shopping-cart"></i></div>
                             Compras
                         </a>
-                        <a class="nav-link" href="#!">
+                        <a class="nav-link" href="@Url.Action("Index", "FacturaVenta")">
                             <div class="sb-nav-link-icon"><i class="fas fa-hand-holding-usd"></i></div>
                             Ventas
                         </a>
